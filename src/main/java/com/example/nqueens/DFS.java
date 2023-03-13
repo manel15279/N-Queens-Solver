@@ -7,7 +7,7 @@ import java.util.Stack;
 public class DFS {
 
     // methode qui verifier si il existe des conflits ou non pour placer une riene dans une ligne
-    public static boolean evaluation(ArrayList<Integer> echiq, int col) {
+    public static boolean evaluation(ArrayList<Integer> echiq) {
         int diffL, diffC;
 
         // cas du riene numero 0, il n ya pas des rienes dans lechiquer donc retourner vrai
@@ -15,15 +15,15 @@ public class DFS {
 
         // faire un loop pour chaque riene déja placé
         for(int i = 0; i < echiq.size(); i++) {
-            // calculer la difference sur les lignes
-            diffC = col - echiq.get(i);
-            // calculer la difference sur les colonne
-            diffL = echiq.size() - i;
-            // si meme ligne/diagonales  alors conflit retourner faux
-            if(diffC == 0 || Math.abs(diffL) == Math.abs(diffC))
-                return false;
+            for(int j = i + 1; j < echiq.size(); j++) {
+                // calculer la difference sur les colonnes
+                diffC = Math.abs(echiq.get(i) - echiq.get(j));
+                // calculer la difference sur les lignes
+                diffL = j - i;
+                if(diffC == 0 || Math.abs(diffL) == Math.abs(diffC))
+                    return false;
+            }
         }
-        // pas de conflit
         return true;
     }
 
@@ -39,22 +39,19 @@ public class DFS {
         while(!ouvert.empty() && result.listeSol == null) {
             node = ouvert.pop();
             if(node.echiq.size() == n) {
-                result.listeSol = node;
+                if(evaluation(node.echiq)) {
+                    result.listeSol = node;
+                }
             }
             else{
-                ArrayList<Integer> temp;
-                Node nodetemp;
                 // pour chaque ligne de la colonne essayer de placer la riene numero etat.size()
                 for(int i = 0; i < n; i++){
-                    // si on peut placer une riene en evitant des conflits
-                    if(evaluation(node.echiq, i)){
-                        // alors créer un nouveau état en déposant cette riene puis empiler l'état dans ouvert
-                        node.echiq.add(i);
-                        ouvert.push(new Node(new ArrayList<>(node.echiq)));
-                        if(result.listeSol == null) result.nbrNodeGenAvPremSol++;
-                        //on enleve la reine qu'on viens d'ajouter pour pouvoir explorer d'autres chemins
-                        node.echiq.remove(node.echiq.size() - 1);
-                    }
+                    // alors créer un nouveau état en déposant cette riene puis empiler l'état dans ouvert
+                    node.echiq.add(i);
+                    ouvert.push(new Node(new ArrayList<>(node.echiq)));
+                    result.nbrNodeGenAvPremSol++;
+                    //on enleve la reine qu'on viens d'ajouter pour pouvoir explorer d'autres chemins
+                    node.echiq.remove(node.echiq.size() - 1);
                 }
             }
         }

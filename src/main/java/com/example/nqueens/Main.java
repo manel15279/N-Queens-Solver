@@ -1,6 +1,5 @@
 package com.example.nqueens;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Main{
@@ -17,7 +16,7 @@ public class Main{
                 board[j][result.listeSol.echiq.get(j)] = 'Q';
             }
             //Affichage échiquier
-            System.out.println("Solution "+(0+1));
+            System.out.println("Solution : ");
             for(int k = 0; k < board.length; k++) {
                 for (int z = 0; z < board[k].length; z++) {
                     System.out.print(board[k][z] + " ");
@@ -30,7 +29,7 @@ public class Main{
     public static void main(String[] args) {
 
         // n est le nombre de rienes a déposer dans le n*n échiquier
-        int n = 12;
+        int n = 8;
         Result result = DFS.successeursDFS(n);
 
         //Affichage
