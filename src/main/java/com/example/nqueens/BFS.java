@@ -1,21 +1,23 @@
 package com.example.nqueens;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
-public class DFS {
+public class BFS {
+
 
 
     // methode pour générer les successeurs par DFS
-    public static Result successeursDFS(int n) {
+    public static Result successeursBFS(int n) {
         Result result = new Result();
         Node node = new Node(new ArrayList<>(),0);
-        Stack<Node> ouvert = new Stack<Node>();
-        ouvert.push(node);
+        LinkedList<Node> ouvert = new LinkedList<Node>();
+        ouvert.addFirst(node);
         result.nbrNodeGenAvPremSol = 1;
 
-        while(!ouvert.empty() && result.listeSol == null) {
+        while(!ouvert.isEmpty() && result.listeSol == null) {
             node = ouvert.pop();
             if(node.echiq.size() == n) {
                 if(Util.evaluation(node.echiq,node.r)) {
@@ -28,7 +30,7 @@ public class DFS {
                     // alors créer un nouveau état en déposant cette riene puis empiler l'état dans ouvert
                 	if(Util.check(node.echiq,node.r,i)) {
                 		node.echiq.add(i);
-                		ouvert.push(new Node(new ArrayList<>(node.echiq),node.r+1));
+                		ouvert.addLast(new Node(new ArrayList<>(node.echiq),node.r+1));
                 		result.nbrNodeGenAvPremSol++;
                 		//on enleve la reine qu'on viens d'ajouter pour pouvoir explorer d'autres chemins
                 		node.echiq.remove(node.r);
