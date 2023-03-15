@@ -16,7 +16,7 @@ public class Astar1 {
 
     public static int countNumberOfConflicts(Node1 node, int n) {
     	int nbConflit = 0,diffC,diffL;
-    	int taille = node.r;
+    	int taille = node.r+1;
         for(int j = 0; j < taille; j++) {
             for(int i = 0; i < n; i++) {
                 // calculer la difference sur les colonnes
@@ -41,7 +41,7 @@ public class Astar1 {
     // methode pour générer les successeurs par DFS
     public static Result1 successeursAstar1(int n) {
         Result1 result = new Result1();
-        Node1 node = new Node1(new ArrayList<>(),0,0,0);
+        Node1 node = new Node1(new ArrayList<>(),0,0);
         PriorityQueue<Node1> ouvert = new PriorityQueue<Node1>();
         ouvert.add(node);
         result.nbrNodeGenAvPremSol = 1;
@@ -59,7 +59,7 @@ public class Astar1 {
                     // alors créer un nouveau état en déposant cette riene puis empiler l'état dans ouvert
                 	if(Util.check(node.echiq,node.r,i)) {
                 		node.echiq.add(i);
-                		ouvert.offer(new Node1(new ArrayList<>(node.echiq),node.r+1,node.echiq.size(),h(node,n)));
+                		ouvert.offer(new Node1(new ArrayList<>(node.echiq),node.r+1,h(node,n)));
                 		result.nbrNodeGenAvPremSol++;
                 		//on enleve la reine qu'on viens d'ajouter pour pouvoir explorer d'autres chemins
                 		node.echiq.remove(node.r);
