@@ -23,11 +23,11 @@ public class Main{
         System.out.println("La liste des solutions : "+resultBFS.listeSol);
         Util.printEchiq(resultBFS, n);
 
-        //Astar1
+        /*//Astar1
         Result1 resultAstar1 = Astar1.successeursAstar1(n);
         System.out.println("Le nbr de nodes générés avant la premiere solution avec Astar1: "+resultAstar1.nbrNodeGenAvPremSol);
         System.out.println("La liste des solutions : "+resultAstar1.listeSol);
-        Util.printEchiq(resultAstar1, n);
+        Util.printEchiq(resultAstar1, n);*/
 
     }
 }

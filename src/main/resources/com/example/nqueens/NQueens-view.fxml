@@ -41,11 +41,13 @@
             </Text>
             <MenuButton layoutX="14.0" layoutY="210.0" mnemonicParsing="false" text="Solving Method" prefWidth="200" AnchorPane.topAnchor="165" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10">
                <items>
-                  <MenuItem onAction="#createBoard" text="Backtracking" />
-                  <MenuItem onAction="#createBoard" text="Genetic Algorithm" />
+                  <MenuItem onAction="#searchDFS" text="DFS" />
+                  <!--<MenuItem onAction="#searchBFS" text="BFS" />
+                  <MenuItem onAction="#searchAstar1" text="A*1" />
+                  <MenuItem onAction="#searchAstar2" text="A*2" />-->
                </items>
             </MenuButton>
-            <Button layoutX="81.0" layoutY="284.0" mnemonicParsing="false" text="Start" prefWidth="100" AnchorPane.topAnchor="245" AnchorPane.leftAnchor="72" AnchorPane.rightAnchor="72"/>
+            <Button layoutX="81.0" layoutY="284.0" mnemonicParsing="false" text="Start" prefWidth="100" AnchorPane.topAnchor="245" AnchorPane.leftAnchor="72" AnchorPane.rightAnchor="72" onAction="#placeQueens"/>
          </children>
       </Pane>
    </children>

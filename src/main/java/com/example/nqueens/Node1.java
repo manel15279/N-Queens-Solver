@@ -6,7 +6,7 @@ public class Node1 implements Comparable<Node1> {
     ArrayList<Integer> echiq;
     int r,h;
 
-    public Node1(ArrayList<Integer> echiq,int r,int h) {
+    public Node1(ArrayList<Integer> echiq, int r, int h) {
         this.echiq = echiq;
         this.r=r;
         this.h=h;

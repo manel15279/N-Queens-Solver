@@ -39,7 +39,7 @@ public class Util {
 		// cas du riene numero 0, il n ya pas des rienes dans lechiquer donc retourner vrai
 		if(taille == 0) return true;
 		int i,diffl,diffc;
-		// faire un loop pour chaque riene d�ja plac�
+		// faire un loop pour chaque riene d�ja plac�
 		for(i=0;i<taille;++i) {
 			// calculer la difference sur les lignes
 			diffc=col-echiq.get(i);
@@ -54,27 +54,6 @@ public class Util {
 	}
 	
     public static void printEchiq(Result result, int n){
-        //remplissage échiquier selon les solutions trouvées
-            //intialisation échiquier
-            char[][] board = new char[n][n];
-            for (int x = 0; x < n; x++) {
-                Arrays.fill(board[x], '.');
-            }
-            for (int j = 0; j < n; j++) {
-                board[j][result.listeSol.echiq.get(j)] = 'Q';
-            }
-            //Affichage échiquier
-            System.out.println("Solution : ");
-            for(int k = 0; k < board.length; k++) {
-                for (int z = 0; z < board[k].length; z++) {
-                    System.out.print(board[k][z] + " ");
-                }
-                System.out.println();
-            }
-            System.out.println();
-    }
-	
-    public static void printEchiq(Result1 result, int n){
         //remplissage échiquier selon les solutions trouvées
             //intialisation échiquier
             char[][] board = new char[n][n];
