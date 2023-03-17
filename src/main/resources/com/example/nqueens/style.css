@@ -1,0 +1,28 @@
+.board {
+    -fx-background-color: #f2f2f2;
+    -fx-border-color: #666666;
+    -fx-border-width: 1px;
+}
+
+.menu-button > .label {
+    -fx-font-size: 14px;
+}
+
+.menu-item:hover {
+    -fx-background-color: #0078D7;
+    -fx-text-fill: white;
+}
+
+.button {
+    -fx-background-color: #0078D7;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+}
+
+.button:hover {
+    -fx-background-color: #005FAD;
+}
+
+.text {
+    -fx-font-size: 14px;
+}
