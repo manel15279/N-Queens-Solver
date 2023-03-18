@@ -8,14 +8,14 @@ public class Main{
     public static void main(String[] args) {
 
         // n est le nombre de rienes a déposer dans le n*n échiquier
-        int n = 8;
+        int n = 14;
         //Affichage
         
-        //DFS
+        /*//DFS
         Result resultDFS = DFS.successeursDFS(n);
         System.out.println("Le nbr de nodes générés avant la premiere solution avec DFS: "+resultDFS.nbrNodeGenAvPremSol);
         System.out.println("La liste des solutions : "+resultDFS.listeSol);
-        Util.printEchiq(resultDFS, n);
+        Util.printEchiq(resultDFS, n);*/
         
         //BFS
         Result resultBFS = BFS.successeursBFS(n);
