@@ -28,7 +28,7 @@ public class BFS {
                 // pour chaque ligne de la colonne essayer de placer la riene numero etat.size()
                 for(int i = 0; i < n; i++){
                     // alors créer un nouveau état en déposant cette riene puis empiler l'état dans ouvert
-                	if(Util.check(node.echiq,node.r,i)) {
+                	if(Util.verifC(node.echiq,node.r,i)) {
                 		node.echiq.add(i);
                 		ouvert.addLast(new Node(new ArrayList<>(node.echiq),node.r+1));
                 		result.nbrNodeGenAvPremSol++;
