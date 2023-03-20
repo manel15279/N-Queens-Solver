@@ -6,4 +6,6 @@ public class Result {
     Node listeSol;
     int nbrNodeGenAvPremSol;
 
+    public Result() {
+    }
 }

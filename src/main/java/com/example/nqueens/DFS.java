@@ -10,7 +10,7 @@ public class DFS {
     // methode pour générer les successeurs par DFS
     public static Result successeursDFS(int n) {
         Result result = new Result();
-        Node node = new Node(new ArrayList<>(),0);
+        Node node = new Node(new ArrayList<>());
         Stack<Node> ouvert = new Stack<Node>();
         ouvert.push(node);
         result.nbrNodeGenAvPremSol = 1;
@@ -18,7 +18,7 @@ public class DFS {
         while(!ouvert.empty() && result.listeSol == null) {
             node = ouvert.pop();
             if(node.echiq.size() == n) {
-                if(Util.evaluation(node.echiq,node.r)) {
+                if(Util.evaluation(node.echiq, n)) {
                     result.listeSol = node;
                 }
             }
@@ -26,12 +26,12 @@ public class DFS {
                 // pour chaque ligne de la colonne essayer de placer la riene numero etat.size()
                 for(int i = 0; i < n; i++){
                     // alors créer un nouveau état en déposant cette riene puis empiler l'état dans ouvert
-                	if(Util.verifC(node.echiq,node.r,i)) {
+                	if(Util.verifC(node.echiq,i)) {
                 		node.echiq.add(i);
-                		ouvert.push(new Node(new ArrayList<>(node.echiq),node.r+1));
+                		ouvert.push(new Node(new ArrayList<>(node.echiq)));
                 		result.nbrNodeGenAvPremSol++;
                 		//on enleve la reine qu'on viens d'ajouter pour pouvoir explorer d'autres chemins
-                		node.echiq.remove(node.r);
+                		node.echiq.remove(node.echiq.size() - 1);
                 	}
                 }
             }

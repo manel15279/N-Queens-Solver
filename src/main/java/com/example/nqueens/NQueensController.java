@@ -19,6 +19,7 @@ public class NQueensController {
     public int size;
 
     public Result result;
+    public Result1 result1;
 
     public void createBoard(ActionEvent event) throws IOException {
         // Get the selected size
@@ -44,7 +45,9 @@ public class NQueensController {
         result = BFS.successeursBFS(size);
     }
 
-
+    public void searchAstar1(ActionEvent event){
+        result1 = Astar1.successeursAstar1(size);
+    }
     // Display queens
     public void placeQueens(ActionEvent event) {
 
@@ -53,7 +56,7 @@ public class NQueensController {
             ImageView queenImageView = new ImageView(image);
             queenImageView.setFitHeight(45);
             queenImageView.setFitWidth(45);
-            chessBoard.add(queenImageView, i, result.listeSol.echiq.get(i));
+            chessBoard.add(queenImageView, i, result1.listeSol.echiq.get(i));
         }
     }
 

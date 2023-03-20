@@ -37,8 +37,8 @@
             <MenuButton layoutX="14.0" layoutY="210.0" mnemonicParsing="false" prefWidth="200" text="Solving Method" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="165">
                <items>
                   <MenuItem onAction="#searchDFS" text="DFS" />
-                  <MenuItem onAction="#searchBFS" text="BFS" />
-<!--                  <MenuItem onAction="#searchAstar1" text="A*1" />-->
+                  <!--<MenuItem onAction="#searchBFS" text="BFS" />-->
+                  <MenuItem onAction="#searchAstar1" text="A*1" />
 <!--                  <MenuItem onAction="#searchAstar2" text="A*2" />-->
                </items>
             </MenuButton>

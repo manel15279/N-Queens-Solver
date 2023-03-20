@@ -4,12 +4,17 @@ import java.util.ArrayList;
 
 public class Node1 implements Comparable<Node1> {
     ArrayList<Integer> echiq;
-    int r,h;
+    int cost, heuristic;
 
-    public Node1(ArrayList<Integer> echiq, int r, int h) {
+    public Node1(ArrayList<Integer> echiq, int cost, int heuristic) {
         this.echiq = echiq;
-        this.r=r;
-        this.h=h;
+        this.cost = cost;
+        this.heuristic = heuristic;
+    }
+
+    // compareTo permet de comparer deux noeud selon leurs fonction f. elle nous permet de trier ouvert selon f.
+    public int compareTo(Node1 n) {
+        return Integer.compare(cost+heuristic, n.cost+n.heuristic);
     }
 
     @Override
@@ -17,8 +22,5 @@ public class Node1 implements Comparable<Node1> {
         return "echiq=" + echiq ;
     }
     
-	// compareTo permet de comparer deux noeud selon leurs fonction f. elle nous permet de trier ouvert selon f.
-	public int compareTo(Node1 n) {
-        return Integer.compare(n.h,h);
-    }
+
 }

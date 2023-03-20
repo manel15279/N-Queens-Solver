@@ -4,11 +4,9 @@ import java.util.ArrayList;
 
 public class Node {
     ArrayList<Integer> echiq;
-    int r;
 
-    public Node(ArrayList<Integer> echiq, int r) {
+    public Node(ArrayList<Integer> echiq) {
         this.echiq = echiq;
-        this.r = r;
     }
 
     @Override
