@@ -13,6 +13,8 @@ import java.util.*;
 
 public class Astar1 {
 
+    public static Result1 result;
+
     //methode pour calculer le nombre de conflits total pour un noeud donné
     public static int calculateHeuristic(ArrayList<Integer> echiq, int n) {
         int nbConflit = 0;
@@ -30,12 +32,13 @@ public class Astar1 {
     }
 
     public static Result1 successeursAstar1(int n) {
-        Result1 result = new Result1(new Node1(new ArrayList<Integer>(), 0, 0), 0);
+        result = new Result1(new Node1(new ArrayList<Integer>(), 0, 0), 0);
         PriorityQueue<Node1> ouvert = new PriorityQueue<Node1>();
         // commencer avec un noeud inital ou echiq est vide, cout & heuristique == 0
         Node1 node = new Node1(new ArrayList<Integer>(), 0, 0);
         boolean solutionFound = false;
         ouvert.add(node);
+        result.nbrNodeGenAvPremSol = 1;
 
         while(!solutionFound) {
             Node1 current = ouvert.poll();
@@ -65,6 +68,7 @@ public class Astar1 {
                 ArrayList<Integer> newEchiq = new ArrayList<>(node.echiq);
                 newEchiq.add(i);
                 int newHeuristic = calculateHeuristic(newEchiq, n);
+                result.nbrNodeGenAvPremSol++;
                 successors.add(new Node1(newEchiq, node.cost, newHeuristic));
             }
         }

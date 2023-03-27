@@ -1,50 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<HBox alignment="CENTER" prefHeight="100" prefWidth="100" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.nqueens.NQueensController">
-   <children>
-      <Pane HBox.hgrow="ALWAYS">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="680.0" styleClass="bg" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.nqueens.NQueensController">
+   <center>
+      <GridPane fx:id="chessBoard" alignment="CENTER" styleClass="board" stylesheets="@style.css" visible="false" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </BorderPane.margin></GridPane>
+   </center>
+   <right>
+      <VBox alignment="CENTER" prefHeight="400.0" prefWidth="291.0" spacing="15.0" BorderPane.alignment="CENTER">
          <children>
-            <GridPane fx:id="chessBoard" alignment="CENTER" styleClass="board" stylesheets="@style.css" visible="false" />
+            <VBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="245.0" spacing="5.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Label text="Choisissez la taille de l'échiquier :" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                     <font>
+                        <Font name="Century Gothic" size="14.0" />
+                     </font></Label>
+                  <MenuButton mnemonicParsing="false" prefWidth="200" stylesheets="@style.css" text="Board Size">
+                     <items>
+                        <MenuItem onAction="#createBoard" text="8x8" />
+                        <MenuItem onAction="#createBoard" text="10x10" />
+                        <MenuItem onAction="#createBoard" text="12x12" />
+                     </items>
+                     <font>
+                        <Font name="Century Gothic" size="12.0" />
+                     </font>
+                  </MenuButton>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER_LEFT" VBox.vgrow="ALWAYS">
+               <children>
+                  <Label prefHeight="36.0" prefWidth="249.0" text="Choisissez la méthode de résolution :" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP" wrapText="true">
+                     <font>
+                        <Font name="Century Gothic" size="14.0" />
+                     </font>
+                  </Label>
+                  <MenuButton mnemonicParsing="false" prefWidth="200" stylesheets="@style.css" text="Solving Method">
+                     <items>
+                        <MenuItem onAction="#searchDFS" text="DFS" />
+                        <MenuItem onAction="#searchBFS" text="BFS" />
+                        <MenuItem onAction="#searchAstar1" text="A*1" />
+                        <!--<MenuItem onAction="#searchAstar2" text="A*2" />-->
+                     </items>
+                     <font>
+                        <Font name="Century Gothic" size="12.0" />
+                     </font>
+                  </MenuButton>
+               </children>
+            </VBox>
+            <Button fx:id="solveButton" alignment="CENTER" minHeight="42.0" mnemonicParsing="false" onAction="#placeQueens" prefHeight="42.0" prefWidth="108.0" styleClass="solveButton" stylesheets="@style.css" text="Solve" textAlignment="CENTER" VBox.vgrow="ALWAYS">
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin>
+            </Button>
+            <TextArea prefHeight="128.0" prefWidth="245.0">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </TextArea>
          </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
          <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
          </padding>
-      </Pane>
-      <Pane HBox.hgrow="ALWAYS">
-         <children>
-            <Text layoutX="14.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose the size of the chessboard:" textAlignment="CENTER" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="10">
-               <font>
-                  <Font size="14" />
-               </font>
-            </Text>
-            <MenuButton layoutX="14.0" layoutY="90.0" mnemonicParsing="false" prefWidth="200" text="Board Size" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="45">
-               <items>
-                  <MenuItem onAction="#createBoard" text="8x8" />
-                  <MenuItem onAction="#createBoard" text="10x10" />
-                  <MenuItem onAction="#createBoard" text="12x12" />
-               </items>
-            </MenuButton>
-            <Text layoutX="14.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose the solving method:" textAlignment="CENTER" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="120">
-               <font>
-                  <Font size="14" />
-               </font>
-            </Text>
-            <MenuButton layoutX="14.0" layoutY="210.0" mnemonicParsing="false" prefWidth="200" text="Solving Method" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="165">
-               <items>
-                  <MenuItem onAction="#searchDFS" text="DFS" />
-                  <!--<MenuItem onAction="#searchBFS" text="BFS" />-->
-                  <MenuItem onAction="#searchAstar1" text="A*1" />
-<!--                  <MenuItem onAction="#searchAstar2" text="A*2" />-->
-               </items>
-            </MenuButton>
-            <Button layoutX="115.0" layoutY="284.0" mnemonicParsing="false" onAction="#placeQueens" prefHeight="29.0" prefWidth="63.0" text="Start" AnchorPane.leftAnchor="115.0" AnchorPane.rightAnchor="-87.33333333333333" AnchorPane.topAnchor="284.0" />
-            <Button layoutX="41.0" layoutY="284.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="63.0" text="Restart" AnchorPane.leftAnchor="72" AnchorPane.rightAnchor="72" AnchorPane.topAnchor="245" />
-         </children>
-      </Pane>
-   </children>
-</HBox>
+      </VBox>
+   </right>
+</BorderPane>

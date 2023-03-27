@@ -2,6 +2,10 @@ package com.example.nqueens;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -17,9 +21,10 @@ public class NQueensController {
     private GridPane chessBoard;
 
     public int size;
+    public String method;
 
-    public Result result;
-    public Result1 result1;
+    public Result resultDFS, resultBFS;
+    public Result1 resultAstar1;
 
     public void createBoard(ActionEvent event) throws IOException {
         // Get the selected size
@@ -30,7 +35,7 @@ public class NQueensController {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 Rectangle square = new Rectangle(50, 50);
-                square.setFill((i + j) % 2 == 0 ? Color.web("#fffacd") : Color.web("#a52a2a"));
+                square.setFill((i + j) % 2 == 0 ? Color.web("#F0F0F0") : Color.web("#000000"));
                 chessBoard.add(square, j, i);
             }
         }
@@ -38,26 +43,41 @@ public class NQueensController {
     }
 
     public void searchDFS(ActionEvent event){
-        result = DFS.successeursDFS(size);
+        MenuItem selectedMethod = (MenuItem) event.getSource();
+        method = (String)selectedMethod.getText();
+        resultDFS = DFS.successeursDFS(size);
     }
 
     public void searchBFS(ActionEvent event){
-        result = BFS.successeursBFS(size);
+        MenuItem selectedMethod = (MenuItem) event.getSource();
+        method = (String)selectedMethod.getText();
+        resultBFS = BFS.successeursBFS(size);
     }
 
     public void searchAstar1(ActionEvent event){
-        result1 = Astar1.successeursAstar1(size);
+        MenuItem selectedMethod = (MenuItem) event.getSource();
+        method = (String)selectedMethod.getText();
+        resultAstar1 = Astar1.successeursAstar1(size);
     }
     // Display queens
     public void placeQueens(ActionEvent event) {
-
         for (int i = 0; i < size; i++) {
-            Image image = new Image(getClass().getResource("chess-piece.png").toExternalForm());
+            Image image = new Image(getClass().getResource("la-monarchie.png").toExternalForm());
             ImageView queenImageView = new ImageView(image);
-            queenImageView.setFitHeight(45);
-            queenImageView.setFitWidth(45);
-            chessBoard.add(queenImageView, i, result1.listeSol.echiq.get(i));
+            queenImageView.setFitHeight(48);
+            queenImageView.setFitWidth(47);
+            queenImageView.setStyle("-fx-alignment: center;");
+            if("A*1".equals(method))
+                chessBoard.add(queenImageView, i, resultAstar1.listeSol.echiq.get(i));
+            if("A*2".equals(method))
+                chessBoard.add(queenImageView, i, resultAstar1.listeSol.echiq.get(i));
+            if("DFS".equals(method))
+                chessBoard.add(queenImageView, i, resultDFS.listeSol.echiq.get(i));
+            if("BFS".equals(method))
+                chessBoard.add(queenImageView, i, resultBFS.listeSol.echiq.get(i));
         }
     }
+
+
 
 }

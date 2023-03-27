@@ -7,9 +7,11 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class NQueensApplication extends Application {
+
+    public Parent root;
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("NQueens-view.fxml"));
+        root = FXMLLoader.load(getClass().getResource("NQueens-view.fxml"));
         primaryStage = primaryStage;
         primaryStage.setTitle("N-Reines");
         primaryStage.setScene(new Scene(root, 750, 450));

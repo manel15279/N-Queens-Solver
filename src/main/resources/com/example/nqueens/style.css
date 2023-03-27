@@ -1,28 +1,93 @@
-.board {
-    -fx-background-color: #f2f2f2;
-    -fx-border-color: #666666;
-    -fx-border-width: 1px;
+*{
+    -fx-font-weight: 600;
 }
 
-.menu-button > .label {
+.board {
+    -fx-border-color: #d3d3d3;
+    -fx-border-width: 2px;
+    -fx-border-radius: 8px;
+}
+
+.menu-button{
+    -fx-appearance: none;
+    -fx-background-color: #ffffff;
+    -fx-border-radius: 50 !important;
+    -fx-box-sizing: border-box;
+    -fx-color: #FFFFFF;
+    -fx-cursor: pointer;
+    -fx-display: inline-block;
+    -fx-font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
     -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-line-height: normal;
+    -fx-margin: 0;
+    -fx-outline: none;
+    -fx-text-align: center;
+    -fx-text-decoration: none;
+    -fx-transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+    -fx-user-select: none;
+    -fx-touch-action: manipulation;
+    -fx-width: 100%;
+    -fx-will-change: transform;
 }
 
 .menu-item:hover {
-    -fx-background-color: #0078D7;
+    -fx-background-color: #3827a6;
     -fx-text-fill: white;
 }
 
 .button {
-    -fx-background-color: #0078D7;
+    -fx-background-color: #3827a4;
     -fx-text-fill: white;
     -fx-font-size: 14px;
 }
 
 .button:hover {
-    -fx-background-color: #005FAD;
+    -fx-background-color: #3827a3;
 }
 
-.text {
-    -fx-font-size: 14px;
+
+.bg{
+    -fx-background-image : url("angryimg.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: fit;
+    -fx-filter: blur(30px);
+
 }
+
+.solveButton{
+    -fx-appearance: none;
+    -fx-background-color: #3928aa;
+    -fx-border-color: 2px solid #302194;
+    -fx-border-radius: 20 !important;
+    -fx-box-sizing: border-box;
+    -fx-color: #FFFFFF;
+    -fx-cursor: pointer;
+    -fx-display: inline-block;
+    -fx-font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    -fx-font-size: 16px;
+    -fx-font-weight: 600;
+    -fx-line-height: normal;
+    -fx-margin: 0;
+    -fx-height: 20px !important;
+    -fx-min-width: 0;
+    -fx-outline: none;
+    -fx-padding: 10px 20px;
+    -fx-text-align: center;
+    -fx-text-decoration: none;
+    -fx-transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+    -fx-user-select: none;
+    -fx-touch-action: manipulation;
+    -fx-width: 100%;
+    -fx-will-change: transform;
+}
+
+.solveButton:disabled {
+    -fx-pointer-events: none;
+}
+
+.solveButton:hover {
+    -fx-box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+    -fx-transform: translateY(-2px);
+}
+
