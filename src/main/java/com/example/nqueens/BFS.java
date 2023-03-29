@@ -16,6 +16,7 @@ public class BFS {
         LinkedList<Node> ouvert = new LinkedList<Node>();
         ouvert.addFirst(node);
         result.nbrNodeGenAvPremSol = 1;
+        result.nbrNodeDev = 0;
 
         while(!ouvert.isEmpty() && result.listeSol == null) {
             node = ouvert.pop();
@@ -25,6 +26,7 @@ public class BFS {
                 }
             }
             else{
+                result.nbrNodeDev++;
                 // pour chaque ligne de la colonne essayer de placer la riene numero etat.size()
                 for(int i = 0; i < n; i++){
                     // alors créer un nouveau état en déposant cette riene puis empiler l'état dans ouvert

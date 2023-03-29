@@ -1,51 +1,107 @@
 package com.example.nqueens;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
+import java.io.FileWriter;
 
 public class Main{
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
+        FileWriter writerDFS = new FileWriter("C:/Users/Asus Zenbook Flip/OneDrive/Bureau/NQueens_DFS.txt");
+        FileWriter writerBFS = new FileWriter("C:/Users/Asus Zenbook Flip/OneDrive/Bureau/NQueens_BFS.txt");
+        FileWriter writerAstar1 = new FileWriter("C:/Users/Asus Zenbook Flip/OneDrive/Bureau/NQueens_Astar1.txt");
+        FileWriter writerAstar2 = new FileWriter("C:/Users/Asus Zenbook Flip/OneDrive/Bureau/NQueens_Astar2.txt");
+        BufferedWriter bufferDFS = new BufferedWriter(writerDFS);
+        BufferedWriter bufferBFS = new BufferedWriter(writerBFS);
+        BufferedWriter bufferAstar1 = new BufferedWriter(writerAstar1);
+        BufferedWriter bufferAstar2 = new BufferedWriter(writerAstar2);
+
+        Result resultDFS = null;
+        Result resultBFS = null;
+        Result1 resultAstar1 = null;
+        Result1 resultAstar2 = null;
+
+        float tempsExe;
+        float tempsExe1;
+        float tempsExe2;
+        float tempsExe3;
         // n est le nombre de rienes a déposer dans le n*n échiquier
-        int n = 8;
-        //Affichage
-        
-        //DFS
-        long t1 = System.currentTimeMillis();
-        Result resultDFS = DFS.successeursDFS(n);
-        long t2 = System.currentTimeMillis();
-        float tempsExe = (float) (t2 - t1) / 1000;
-        System.out.println("Temps d'exécution : " + tempsExe + " s");
-        System.out.println("Le nbr de nodes générés avant la premiere solution avec DFS: "+resultDFS.nbrNodeGenAvPremSol);
-        System.out.println("La liste des solutions : "+resultDFS.listeSol);
-        Util.printEchiq(resultDFS, n);
-        
-       /* //BFS
-        Result resultBFS = BFS.successeursBFS(n);
-        System.out.println("Le nbr de nodes générés avant la premiere solution avec BFS: "+resultBFS.nbrNodeGenAvPremSol);
-        System.out.println("La liste des solutions : "+resultBFS.listeSol);
-        Util.printEchiq(resultBFS, n);*/
 
-        //Astar1
-        long t3 = System.currentTimeMillis();
-        Result1 resultAstar1 = Astar1.successeursAstar1(n);
-        long t4 = System.currentTimeMillis();
-        float tempsExe1 = (float) (t4 - t3) / 1000;
-        System.out.println("Temps d'exécution : " + tempsExe1 + " s");
-        System.out.println("Le nbr de nodes générés avant la premiere solution avec Astar1: "+resultAstar1.nbrNodeGenAvPremSol);
-        System.out.println("La liste des solutions : "+resultAstar1.listeSol);
-        Util.printEchiq1(resultAstar1, n);
+        for(int n = 4; n < 11; n++) {
+            float moyDFS = 0;
+            float moyBFS = 0;
+            float moyAstar1 = 0;
+            float moyAstar2 = 0;
+            //Affichage
+            //DFS
+            for(int i = 0; i < 20; i++) {
+                long t1 = System.currentTimeMillis();
+                resultDFS = DFS.successeursDFS(n);
+                long t2 = System.currentTimeMillis();
+                tempsExe = (float) (t2 - t1) / 1000;
+                moyDFS += tempsExe;
+            }
+            System.out.println("Temps d'exécution : " + moyDFS / 20 + " s");
+            System.out.println("Le nbr de nodes générés avant la premiere solution avec DFS: " + resultDFS.nbrNodeGenAvPremSol);
+            System.out.println("Le nombre de noeuds developpés : " + resultDFS.nbrNodeDev);
+            System.out.println("La liste des solutions : " + resultDFS.listeSol);
+            //Util.printEchiq(resultDFS, n);
+            bufferDFS.write(+n+ " " + moyDFS / 20 + " " + resultDFS.nbrNodeGenAvPremSol + " " + resultDFS.nbrNodeDev + " " + resultDFS.listeSol + "\n");
 
-        //Astar2
-        long t5 = System.currentTimeMillis();
-        Result1 resultAstar2 = Astar2.successeursAstar2(n);
-        long t6 = System.currentTimeMillis();
-        float tempsExe2 = (float) (t6 - t5) / 1000;
-        System.out.println("Temps d'exécution : " + tempsExe2 + " s");
-        System.out.println("Le nbr de nodes générés avant la premiere solution avec Astar1: "+resultAstar2.nbrNodeGenAvPremSol);
-        System.out.println("La liste des solutions : "+resultAstar2.listeSol);
-        Util.printEchiq1(resultAstar2, n);
+            //BFS
+            for(int i = 0; i < 20; i++) {
+                long t7 = System.currentTimeMillis();
+                resultBFS = BFS.successeursBFS(n);
+                long t8 = System.currentTimeMillis();
+                tempsExe3 = (float) (t8 - t7) / 1000;
+                moyBFS += tempsExe3;
+            }
+            System.out.println("Temps d'exécution : " + moyBFS / 20 + " s");
+            System.out.println("Le nbr de nodes générés avant la premiere solution avec BFS: " + resultBFS.nbrNodeGenAvPremSol);
+            System.out.println("Le nombre de noeuds developpés : " + resultBFS.nbrNodeDev);
+            System.out.println("La liste des solutions : " + resultBFS.listeSol);
+            //Util.printEchiq(resultBFS, n);
+            bufferBFS.write(+n+ " " + moyBFS / 20 + " " + resultBFS.nbrNodeGenAvPremSol + " " + resultBFS.nbrNodeDev + " " + resultBFS.listeSol + "\n");
 
+            //Astar1
+            for(int i = 0; i < 20; i++) {
+                long t3 = System.currentTimeMillis();
+                resultAstar1 = Astar1.successeursAstar(n);
+                long t4 = System.currentTimeMillis();
+                tempsExe1 = (float) (t4 - t3) / 1000;
+                moyAstar1 += tempsExe1;
+            }
+            System.out.println("Temps d'exécution : " + moyAstar1 / 20 + " s");
+            System.out.println("Le nbr de nodes générés avant la premiere solution avec Astar1: " + resultAstar1.nbrNodeGenAvPremSol);
+            System.out.println("Le nombre de noeuds developpés : " + resultAstar1.nbrNodeDev);
+            System.out.println("La liste des solutions : " + resultAstar1.listeSol);
+            //Util.printEchiq1(resultAstar1, n);
+            bufferAstar1.write(+n+ " " + moyAstar1 / 20 + " " + resultAstar1.nbrNodeGenAvPremSol + " " + resultAstar1.nbrNodeDev + " " + resultAstar1.listeSol + "\n");
+
+            //Astar2
+            for(int i = 0; i < 20; i++) {
+                long t5 = System.currentTimeMillis();
+                resultAstar2 = Astar2.successeursAstar(n);
+                long t6 = System.currentTimeMillis();
+                tempsExe2 = (float) (t6 - t5) / 1000;
+                moyAstar2 += tempsExe2;
+            }
+            System.out.println("Temps d'exécution : " + moyAstar2 / 20 + " s");
+            System.out.println("Le nbr de nodes générés avant la premiere solution avec Astar2: " + resultAstar2.nbrNodeGenAvPremSol);
+            System.out.println("Le nombre de noeuds developpés : " + resultAstar2.nbrNodeDev);
+            System.out.println("La liste des solutions : " + resultAstar2.listeSol);
+            //Util.printEchiq1(resultAstar2, n);
+            bufferAstar2.write(+n+ " " + moyAstar2 / 20 + " " + resultAstar2.nbrNodeGenAvPremSol + " " + resultAstar2.nbrNodeDev + " " + resultAstar2.listeSol + "\n");
+
+        }
+
+        bufferDFS.close();
+        bufferBFS.close();
+        bufferAstar1.close();
+        bufferAstar2.close();
     }
 }

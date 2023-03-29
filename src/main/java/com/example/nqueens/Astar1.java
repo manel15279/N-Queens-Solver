@@ -5,7 +5,6 @@ package com.example.nqueens;
 //et on chosis les rienes avec le moins de conflits. donc a chaque fois on minimise le nombre total de conflits
 // donc h est cette fonction et g peut etre la profondeur dans la solution ie le numero de la riene a placer
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.PriorityQueue;
 
@@ -16,11 +15,14 @@ public class Astar1 {
     public static Result1 result;
 
     //methode pour calculer le nombre de conflits total pour un noeud donné
-    public static int calculateHeuristic(ArrayList<Integer> echiq, int n) {
+    public static int calculateConfHeuristic(ArrayList<Integer> echiq, int n) {
         int nbConflit = 0;
         for (int i = 0; i < echiq.size(); i++) {
             for (int j = i + 1; j < echiq.size(); j++) {
-                if (echiq.get(i) == echiq.get(j) || Math.abs(echiq.get(i) - echiq.get(j)) == j - i) {
+                if ((echiq.get(i) == echiq.get(j))) {
+                    nbConflit++;
+                }
+                if ((Math.abs(echiq.get(i) - echiq.get(j)) == j - i)) {
                     nbConflit++;
                 }
             }
@@ -29,29 +31,42 @@ public class Astar1 {
         return nbConflit;
     }
 
-    public static Result1 successeursAstar1(int n) {
+    public static Result1 successeursAstar(int n) {
         result = new Result1(new Node1(new ArrayList<Integer>(), 0, 0), 0);
         PriorityQueue<Node1> ouvert = new PriorityQueue<Node1>();
         // commencer avec un noeud inital ou echiq est vide, cout & heuristique == 0
         Node1 node = new Node1(new ArrayList<Integer>(), 0, 0);
-        boolean solutionFound = false;
         ouvert.add(node);
         result.nbrNodeGenAvPremSol = 1;
+        result.nbrNodeDev = 0;
+        HashSet<Node1> closedSet = new HashSet<>();
 
-        while(!solutionFound) {
+
+        while(!ouvert.isEmpty()) {
             Node1 current = ouvert.poll();
+            result.nbrNodeDev++;
 
             // si ce noeud est une solution valide alors on le retourne comme resulat
             if (Util.evaluation(current.echiq, n)) {
-                solutionFound = true;
                 result.listeSol = current;
+                return result;
             }
             else {
+                closedSet.add(current);
                 // on genere tous les successeur avec le minimum de conflits
-                List<Node1> successors = generateSuccessors(current, n);
-
-                // on ajoute la liste des successeurs dans ouvert
-                ouvert.addAll(successors);
+                for (Node1 neighbor : generateSuccessors(current, n)) {
+                    if (closedSet.contains(neighbor)) {
+                        continue;
+                    }
+                    int tentativeG = current.cost + 1;
+                    if (!ouvert.contains(neighbor) || tentativeG < neighbor.cost) {
+                        neighbor.cost = tentativeG;
+                        if (!ouvert.contains(neighbor)) {
+                            ouvert.add(neighbor);
+                            result.nbrNodeGenAvPremSol++;
+                        }
+                    }
+                }
             }
         }
         // si aucun resultat n'est trouvé alors retourner null
@@ -62,12 +77,12 @@ public class Astar1 {
         List<Node1> successors = new ArrayList<>();
 
         for (int i = 0; i < n; i++) {
+            if(Util.check(node.echiq, i)){
                 ArrayList<Integer> newEchiq = new ArrayList<>(node.echiq);
                 newEchiq.add(i);
-                int newHeuristic = calculateHeuristic(newEchiq, n);
-                result.nbrNodeGenAvPremSol++;
-                successors.add(new Node1(newEchiq, node.cost, newHeuristic));
-        }
+                int newHeuristic = calculateConfHeuristic(newEchiq, n);
+                successors.add(new Node1(newEchiq, node.cost + 1, newHeuristic));
+        }   }
         return successors;
     }
 

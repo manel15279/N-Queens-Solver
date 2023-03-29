@@ -14,6 +14,7 @@ public class DFS {
         Stack<Node> ouvert = new Stack<Node>();
         ouvert.push(node);
         result.nbrNodeGenAvPremSol = 1;
+        result.nbrNodeDev = 0;
 
         while(!ouvert.empty() && result.listeSol == null) {
             node = ouvert.pop();
@@ -23,6 +24,7 @@ public class DFS {
                 }
             }
             else{
+                result.nbrNodeDev++;
                 // pour chaque ligne de la colonne essayer de placer la riene numero etat.size()
                 for(int i = 0; i < n; i++){
                     // alors créer un nouveau état en déposant cette riene puis empiler l'état dans ouvert

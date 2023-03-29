@@ -57,7 +57,7 @@ public class NQueensController {
     public void searchAstar1(ActionEvent event){
         MenuItem selectedMethod = (MenuItem) event.getSource();
         method = (String)selectedMethod.getText();
-        resultAstar1 = Astar1.successeursAstar1(size);
+        resultAstar1 = Astar1.successeursAstar(size);
     }
     // Display queens
     public void placeQueens(ActionEvent event) {

@@ -30,21 +30,17 @@ public class Util {
     
 	// methode qui verifie s'il existe des conflits ou non pour placer une riene dans une ligne
 	public static boolean check (ArrayList<Integer> echiq, int col) {
-		// cas du riene numero 0, il n ya pas des rienes dans lechiquer donc retourner vrai
-		if(echiq.size() == 0) return true;
-		int i,diffl,diffc;
-		// faire un loop pour chaque riene d�ja plac�
-		for(i = 0; i < echiq.size(); i++) {
-			// calculer la difference sur les lignes
-			diffc = col - echiq.get(i);
-			// calculer la difference sur les colonne
-			diffl = echiq.size() - i;
-			// si meme ligne/diagonales  alors conflit retourner faux
-			if(diffc == 0 || Math.abs(diffl) == Math.abs(diffc))
-				return false;
-		}
-		// pas de conflit
-		return true;
+        for (int i = 0; i < echiq.size(); i++) {
+            //checks if any queen is on the same column as the current queen
+            if (echiq.get(i) == col) {
+                return false;
+            }
+            //checks if any queen is on the same diagonal as the current queen
+            if (echiq.size() - i == Math.abs(col - echiq.get(i))) {
+                return false;
+            }
+        }
+        return true;
 	}
 	
     public static void printEchiq(Result result, int n){
