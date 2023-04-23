@@ -8,8 +8,9 @@ public class Result1 {
 
     int nbrNodeDev;
 
-    public Result1(Node1 listeSol, int nbrNodeGenAvPremSol) {
+    public Result1(Node1 listeSol, int nbrNodeGenAvPremSol, int nbrNodeDev) {
         this.listeSol = listeSol;
         this.nbrNodeGenAvPremSol = nbrNodeGenAvPremSol;
+        this.nbrNodeDev = nbrNodeDev;
     }
 }

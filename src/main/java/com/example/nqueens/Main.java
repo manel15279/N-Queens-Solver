@@ -37,7 +37,7 @@ public class Main{
             float moyAstar1 = 0;
             float moyAstar2 = 0;
             //Affichage
-            //DFS
+            /*//DFS
             for(int i = 0; i < 20; i++) {
                 long t1 = System.currentTimeMillis();
                 resultDFS = DFS.successeursDFS(n);
@@ -50,8 +50,8 @@ public class Main{
             System.out.println("Le nombre de noeuds developpés : " + resultDFS.nbrNodeDev);
             System.out.println("La liste des solutions : " + resultDFS.listeSol);
             //Util.printEchiq(resultDFS, n);
-            bufferDFS.write(+n+ " " + moyDFS / 20 + " " + resultDFS.nbrNodeGenAvPremSol + " " + resultDFS.nbrNodeDev + " " + resultDFS.listeSol + "\n");
-
+            bufferDFS.write(+n+ "&" + moyDFS / 20 + "&" + resultDFS.nbrNodeGenAvPremSol + "&" + resultDFS.nbrNodeDev + "&" + resultDFS.listeSol + "\n");
+*/
             //BFS
             for(int i = 0; i < 20; i++) {
                 long t7 = System.currentTimeMillis();
@@ -65,9 +65,9 @@ public class Main{
             System.out.println("Le nombre de noeuds developpés : " + resultBFS.nbrNodeDev);
             System.out.println("La liste des solutions : " + resultBFS.listeSol);
             //Util.printEchiq(resultBFS, n);
-            bufferBFS.write(+n+ " " + moyBFS / 20 + " " + resultBFS.nbrNodeGenAvPremSol + " " + resultBFS.nbrNodeDev + " " + resultBFS.listeSol + "\n");
+            //bufferBFS.write(+n+ "&" + moyBFS / 20 + "&" + resultBFS.nbrNodeGenAvPremSol + "&" + resultBFS.nbrNodeDev + "&" + resultBFS.listeSol + "\n");
 
-            //Astar1
+            /*//Astar1
             for(int i = 0; i < 20; i++) {
                 long t3 = System.currentTimeMillis();
                 resultAstar1 = Astar1.successeursAstar(n);
@@ -80,7 +80,7 @@ public class Main{
             System.out.println("Le nombre de noeuds developpés : " + resultAstar1.nbrNodeDev);
             System.out.println("La liste des solutions : " + resultAstar1.listeSol);
             //Util.printEchiq1(resultAstar1, n);
-            bufferAstar1.write(+n+ " " + moyAstar1 / 20 + " " + resultAstar1.nbrNodeGenAvPremSol + " " + resultAstar1.nbrNodeDev + " " + resultAstar1.listeSol + "\n");
+            bufferAstar1.write(+n+ "&" + moyAstar1 / 20 + "&" + resultAstar1.nbrNodeGenAvPremSol + "&" + resultAstar1.nbrNodeDev + "&" + resultAstar1.listeSol + "\n");
 
             //Astar2
             for(int i = 0; i < 20; i++) {
@@ -95,8 +95,8 @@ public class Main{
             System.out.println("Le nombre de noeuds developpés : " + resultAstar2.nbrNodeDev);
             System.out.println("La liste des solutions : " + resultAstar2.listeSol);
             //Util.printEchiq1(resultAstar2, n);
-            bufferAstar2.write(+n+ " " + moyAstar2 / 20 + " " + resultAstar2.nbrNodeGenAvPremSol + " " + resultAstar2.nbrNodeDev + " " + resultAstar2.listeSol + "\n");
-
+            bufferAstar2.write(+n+ "&" + moyAstar2 / 20 + "&" + resultAstar2.nbrNodeGenAvPremSol + "&" + resultAstar2.nbrNodeDev + "&" + resultAstar2.listeSol + "\n");
+*/
         }
 
         bufferDFS.close();

@@ -12,17 +12,19 @@ public class BFS {
     // methode pour générer les successeurs par DFS
     public static Result successeursBFS(int n) {
         Result result = new Result();
-        Node node = new Node(new ArrayList<>());
+        Node node = new Node(new int[n]);
         LinkedList<Node> ouvert = new LinkedList<Node>();
         ouvert.addFirst(node);
         result.nbrNodeGenAvPremSol = 1;
         result.nbrNodeDev = 0;
 
-        while(!ouvert.isEmpty() && result.listeSol == null) {
+        while(!ouvert.isEmpty()) {
             node = ouvert.pop();
-            if(node.echiq.size() == n) {
+            result.nbrNodeGenAvPremSol++;
+            if(node.level == n) {
                 if(Util.evaluation(node.echiq, n)) {
                     result.listeSol = node;
+                    return result;
                 }
             }
             else{
@@ -30,12 +32,12 @@ public class BFS {
                 // pour chaque ligne de la colonne essayer de placer la riene numero etat.size()
                 for(int i = 0; i < n; i++){
                     // alors créer un nouveau état en déposant cette riene puis empiler l'état dans ouvert
-                	if(Util.verifC(node.echiq,i)) {
-                		node.echiq.add(i);
-                		ouvert.addLast(new Node(new ArrayList<>(node.echiq)));
+                	if(node.level < n && Util.verifC(node,i)) {
+                        int[] succEchiq = node.echiq.clone();
+                        succEchiq[node.level] = i;
+                		ouvert.addLast(new Node(succEchiq, node.level + 1));
                 		result.nbrNodeGenAvPremSol++;
                 		//on enleve la reine qu'on viens d'ajouter pour pouvoir explorer d'autres chemins
-                		node.echiq.remove(node.echiq.size() - 1);
                 	}
                 }
             }

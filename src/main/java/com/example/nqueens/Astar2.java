@@ -16,14 +16,14 @@ public class Astar2 {
     public static Result1 result;
 
     //methode pour calculer le nombre de conflits total pour un noeud donné
-    public static int calculateEucHeuristic(ArrayList<Integer> echiq, int n) {
+    public static int calculateEucHeuristic(int[] echiq, int n) {
         int dist = 0;
-        for (int i = 0; i < echiq.size(); i++) {
-            for (int j = i + 1; j < echiq.size(); j++) {
-                if (echiq.get(i) == echiq.get(j)) {
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                if (echiq[i] == echiq[j]) {
                     dist += 2;
                 }
-                if (Math.abs(i - j) == Math.abs(echiq.get(i) - echiq.get(j))) {
+                if (Math.abs(i - j) == Math.abs(echiq[i] - echiq[j])) {
                     dist += 2;
                 }
             }
@@ -33,10 +33,14 @@ public class Astar2 {
 
 
     public static Result1 successeursAstar(int n) {
-        result = new Result1(new Node1(new ArrayList<Integer>(), 0, 0), 0);
-        PriorityQueue<Node1> ouvert = new PriorityQueue<Node1>();
+        result = new Result1(new Node1(new int[n], 0, 0), 0, 0);
+        PriorityQueue<Node1> ouvert = new PriorityQueue<Node1>((n1, n2) -> {
+            int f1 = n1.cost + n1.heuristic;
+            int f2 = n2.cost + n2.heuristic;
+            return f1 - f2;
+        });
         // commencer avec un noeud inital ou echiq est vide, cout & heuristique == 0
-        Node1 node = new Node1(new ArrayList<Integer>(), 0, 0);
+        Node1 node = new Node1(new int[n], 0, 0);
         ouvert.add(node);
         result.nbrNodeGenAvPremSol = 1;
         result.nbrNodeDev = 0;
@@ -78,9 +82,9 @@ public class Astar2 {
         List<Node1> successors = new ArrayList<>();
 
         for (int i = 0; i < n; i++) {
-            if(Util.check(node.echiq, i)) {
-                ArrayList<Integer> newEchiq = new ArrayList<>(node.echiq);
-                newEchiq.add(i);
+            if(node.cost < n && Util.verifC1(node, i)) {
+                int[] newEchiq = node.echiq.clone();
+                newEchiq[node.cost] = i;
                 int newHeuristic = calculateEucHeuristic(newEchiq, n);
                 successors.add(new Node1(newEchiq, node.cost + 1, newHeuristic));
             }

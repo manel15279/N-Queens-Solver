@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.VBox?>
@@ -19,16 +19,18 @@
          </BorderPane.margin></GridPane>
    </center>
    <right>
-      <VBox alignment="CENTER" prefHeight="400.0" prefWidth="291.0" spacing="15.0" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" prefHeight="400.0" prefWidth="291.0" spacing="20.0" stylesheets="@style.css" BorderPane.alignment="CENTER">
          <children>
             <VBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="245.0" spacing="5.0" VBox.vgrow="ALWAYS">
                <children>
-                  <Label text="Choisissez la taille de l'échiquier :" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                  <Label styleClass="menu-label" text="Choisissez la taille de l'échiquier :" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                      <font>
                         <Font name="Century Gothic" size="14.0" />
                      </font></Label>
-                  <MenuButton mnemonicParsing="false" prefWidth="200" stylesheets="@style.css" text="Board Size">
+                  <MenuButton id="menu-button" mnemonicParsing="false" prefHeight="33.0" prefWidth="182.0" styleClass="menu-button" text="Taille">
                      <items>
+                        <MenuItem onAction="#createBoard" text="4x4" />
+                        <MenuItem onAction="#createBoard" text="6x6" />
                         <MenuItem onAction="#createBoard" text="8x8" />
                         <MenuItem onAction="#createBoard" text="10x10" />
                         <MenuItem onAction="#createBoard" text="12x12" />
@@ -36,45 +38,63 @@
                      <font>
                         <Font name="Century Gothic" size="12.0" />
                      </font>
+                     <stylesheets>
+                        <URL value="@style.css" />
+                     </stylesheets>
                   </MenuButton>
                </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" top="5.0" />
+               </VBox.margin>
             </VBox>
             <VBox alignment="CENTER_LEFT" VBox.vgrow="ALWAYS">
                <children>
-                  <Label prefHeight="36.0" prefWidth="249.0" text="Choisissez la méthode de résolution :" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP" wrapText="true">
+                  <Label prefHeight="36.0" prefWidth="249.0" styleClass="menu-label" text="Choisissez la méthode de résolution :" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP" wrapText="true">
                      <font>
                         <Font name="Century Gothic" size="14.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
                   </Label>
-                  <MenuButton mnemonicParsing="false" prefWidth="200" stylesheets="@style.css" text="Solving Method">
+                  <MenuButton id="menu-button" mnemonicParsing="false" prefHeight="33.0" prefWidth="181.0" styleClass="menu-button" stylesheets="@style.css" text="Méthode de résolution">
                      <items>
                         <MenuItem onAction="#searchDFS" text="DFS" />
                         <MenuItem onAction="#searchBFS" text="BFS" />
                         <MenuItem onAction="#searchAstar1" text="A*1" />
-                        <!--<MenuItem onAction="#searchAstar2" text="A*2" />-->
+                        <MenuItem onAction="#searchAstar2" text="A*2" />
                      </items>
                      <font>
                         <Font name="Century Gothic" size="12.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin>
                   </MenuButton>
                </children>
             </VBox>
-            <Button fx:id="solveButton" alignment="CENTER" minHeight="42.0" mnemonicParsing="false" onAction="#placeQueens" prefHeight="42.0" prefWidth="108.0" styleClass="solveButton" stylesheets="@style.css" text="Solve" textAlignment="CENTER" VBox.vgrow="ALWAYS">
+            <Button fx:id="solveButton" alignment="CENTER" minHeight="42.0" mnemonicParsing="false" onAction="#placeQueens" prefHeight="35.0" prefWidth="126.0" style="-fx-border-radius: 25;" styleClass="solveButton" stylesheets="@style.css" text="Commencer" textAlignment="CENTER" VBox.vgrow="ALWAYS">
                <VBox.margin>
-                  <Insets top="15.0" />
+                  <Insets top="5.0" />
                </VBox.margin>
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
             </Button>
-            <TextArea prefHeight="128.0" prefWidth="245.0">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </TextArea>
+            <VBox prefHeight="139.0" prefWidth="261.0">
+               <children>
+                  <Label fx:id="time" prefHeight="120.0" prefWidth="261.0" styleClass="stats" stylesheets="@style.css" textFill="WHITE" wrapText="true" />
+                  <Label fx:id="nodesGen" prefHeight="120.0" prefWidth="261.0" styleClass="stats" stylesheets="@style.css" textFill="WHITE" wrapText="true" />
+                  <Label fx:id="nodesDev" prefHeight="120.0" prefWidth="261.0" styleClass="stats" stylesheets="@style.css" textFill="WHITE" wrapText="true" />
+                  <Label fx:id="solution" prefHeight="120.0" prefWidth="261.0" styleClass="stats" stylesheets="@style.css" textFill="WHITE" wrapText="true" />
+               </children>
+            </VBox>
          </children>
          <BorderPane.margin>
-            <Insets />
+            <Insets bottom="10.0" />
          </BorderPane.margin>
          <padding>
-            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+            <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
          </padding>
       </VBox>
    </right>

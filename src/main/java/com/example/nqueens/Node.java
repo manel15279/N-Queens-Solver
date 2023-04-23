@@ -1,16 +1,22 @@
 package com.example.nqueens;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Node {
-    ArrayList<Integer> echiq;
+    int[] echiq;
+    int level = 0;
 
-    public Node(ArrayList<Integer> echiq) {
+    public Node(int[] echiq, int level ) {
+        this.echiq = echiq;
+        this.level = level;
+    }
+    public Node(int[] echiq) {
         this.echiq = echiq;
     }
 
     @Override
     public String toString() {
-        return "echiq=" + echiq ;
+        return Arrays.toString(echiq);
     }
 }

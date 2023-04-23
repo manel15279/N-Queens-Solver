@@ -10,17 +10,19 @@ public class DFS {
     // methode pour générer les successeurs par DFS
     public static Result successeursDFS(int n) {
         Result result = new Result();
-        Node node = new Node(new ArrayList<>());
+        Node node = new Node(new int[n]);
         Stack<Node> ouvert = new Stack<Node>();
         ouvert.push(node);
         result.nbrNodeGenAvPremSol = 1;
         result.nbrNodeDev = 0;
 
-        while(!ouvert.empty() && result.listeSol == null) {
+        while(!ouvert.empty()) {
             node = ouvert.pop();
-            if(node.echiq.size() == n) {
+            result.nbrNodeGenAvPremSol++;
+            if(node.level == n) {
                 if(Util.evaluation(node.echiq, n)) {
                     result.listeSol = node;
+                    return result;
                 }
             }
             else{
@@ -28,12 +30,11 @@ public class DFS {
                 // pour chaque ligne de la colonne essayer de placer la riene numero etat.size()
                 for(int i = 0; i < n; i++){
                     // alors créer un nouveau état en déposant cette riene puis empiler l'état dans ouvert
-                	if(Util.verifC(node.echiq,i)) {
-                		node.echiq.add(i);
-                		ouvert.push(new Node(new ArrayList<>(node.echiq)));
-                		result.nbrNodeGenAvPremSol++;
-                		//on enleve la reine qu'on viens d'ajouter pour pouvoir explorer d'autres chemins
-                		node.echiq.remove(node.echiq.size() - 1);
+                	if(node.level < n && Util.verifC(node,i)) {
+                        int[] succEchiq = node.echiq.clone();
+                		succEchiq[node.level] = i;
+                		ouvert.push(new Node(succEchiq, node.level + 1));
+                		//on enleve la reine qu'on viens d'ajouter pour pouvoir explorer d'autres chemin
                 	}
                 }
             }
