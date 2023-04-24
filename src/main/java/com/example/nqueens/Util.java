@@ -91,4 +91,19 @@ public class Util {
         }
         System.out.println();
     }
+
+    // Print the chess board with the positions of the queens
+    public static void printBoard(int[] queens) {
+        int n = queens.length;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (queens[i] == j) {
+                    System.out.print("Q ");
+                } else {
+                    System.out.print("- ");
+                }
+            }
+            System.out.println();
+        }
+    }
 }

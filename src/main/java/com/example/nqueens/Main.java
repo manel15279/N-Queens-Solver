@@ -15,10 +15,13 @@ public class Main{
         FileWriter writerBFS = new FileWriter("C:/Users/Asus Zenbook Flip/OneDrive/Bureau/NQueens_BFS.txt");
         FileWriter writerAstar1 = new FileWriter("C:/Users/Asus Zenbook Flip/OneDrive/Bureau/NQueens_Astar1.txt");
         FileWriter writerAstar2 = new FileWriter("C:/Users/Asus Zenbook Flip/OneDrive/Bureau/NQueens_Astar2.txt");
+        FileWriter writerGA = new FileWriter("C:/Users/Asus Zenbook Flip/OneDrive/Bureau/NQueens_GA.txt");
+
         BufferedWriter bufferDFS = new BufferedWriter(writerDFS);
         BufferedWriter bufferBFS = new BufferedWriter(writerBFS);
         BufferedWriter bufferAstar1 = new BufferedWriter(writerAstar1);
         BufferedWriter bufferAstar2 = new BufferedWriter(writerAstar2);
+        BufferedWriter bufferGA = new BufferedWriter(writerGA);
 
         Result resultDFS = null;
         Result resultBFS = null;
@@ -29,13 +32,21 @@ public class Main{
         float tempsExe1;
         float tempsExe2;
         float tempsExe3;
-        // n est le nombre de rienes a déposer dans le n*n échiquier
+        float tempsExe4;
 
-        for(int n = 4; n < 11; n++) {
+        int populationSize = 8000; // size of the population
+        int maxGenerations = 1000; // maximum number of generations
+        double mutationRate = 0.02; // probability of mutation
+        double selectionRate = 0.3; // probability of selection
+
+        // n est le nombre de rienes a déposer dans le n*n échiquier
+        for(int n = 8; n < 9; n++) {
             float moyDFS = 0;
             float moyBFS = 0;
             float moyAstar1 = 0;
             float moyAstar2 = 0;
+            float moyGA = 0;
+            int[] resultGA = new int[n];
             //Affichage
             /*//DFS
             for(int i = 0; i < 20; i++) {
@@ -51,7 +62,7 @@ public class Main{
             System.out.println("La liste des solutions : " + resultDFS.listeSol);
             //Util.printEchiq(resultDFS, n);
             bufferDFS.write(+n+ "&" + moyDFS / 20 + "&" + resultDFS.nbrNodeGenAvPremSol + "&" + resultDFS.nbrNodeDev + "&" + resultDFS.listeSol + "\n");
-*/
+
             //BFS
             for(int i = 0; i < 20; i++) {
                 long t7 = System.currentTimeMillis();
@@ -67,7 +78,7 @@ public class Main{
             //Util.printEchiq(resultBFS, n);
             //bufferBFS.write(+n+ "&" + moyBFS / 20 + "&" + resultBFS.nbrNodeGenAvPremSol + "&" + resultBFS.nbrNodeDev + "&" + resultBFS.listeSol + "\n");
 
-            /*//Astar1
+            //Astar1
             for(int i = 0; i < 20; i++) {
                 long t3 = System.currentTimeMillis();
                 resultAstar1 = Astar1.successeursAstar(n);
@@ -97,11 +108,26 @@ public class Main{
             //Util.printEchiq1(resultAstar2, n);
             bufferAstar2.write(+n+ "&" + moyAstar2 / 20 + "&" + resultAstar2.nbrNodeGenAvPremSol + "&" + resultAstar2.nbrNodeDev + "&" + resultAstar2.listeSol + "\n");
 */
-        }
+            //GA
+            for(int i = 0; i < 1; i++) {
+                long t9 = System.currentTimeMillis();
+                resultGA = GeneticAlgorithm.geneticAlgorithm(n, populationSize, maxGenerations, mutationRate, selectionRate);
+                long t10 = System.currentTimeMillis();
+                tempsExe4 = (float) (t10 - t9) / 1000;
+                moyGA += tempsExe4;
+            }
+            System.out.println("Temps d'exécution : " + moyGA / 1 + " s");
+            //System.out.println("Le nbr de nodes générés avant la premiere solution avec DFS: " + resultDFS.nbrNodeGenAvPremSol);
+            //System.out.println("Le nombre de noeuds developpés : " + resultDFS.nbrNodeDev);
+            System.out.println("La liste des solutions : " + resultGA.toString());
+            Util.printBoard(resultGA);
+            //bufferDFS.write(+n+ "&" + moyDFS / 20 + "&" + resultDFS.nbrNodeGenAvPremSol + "&" + resultDFS.nbrNodeDev + "&" + resultDFS.listeSol + "\n");
 
+        }
+/*
         bufferDFS.close();
         bufferBFS.close();
         bufferAstar1.close();
-        bufferAstar2.close();
+        bufferAstar2.close();*/
     }
 }

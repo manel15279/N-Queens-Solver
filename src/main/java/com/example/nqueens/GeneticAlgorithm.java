@@ -1,14 +1,12 @@
 package com.example.nqueens;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class GeneticAlgorithm {
-    private static int N = 8; // size of the chessboard
-    private static int POPULATION_SIZE = 100; // size of the population
-    private static int MAX_GENERATIONS = 1000; // maximum number of generations
-    private static double MUTATION_RATE = 0.01; // probability of mutation
 
     // Fitness function: calculates the number of conflicts in the placement of the queens
-    private static int calculateFitness(int[] chromosome) {
+    private static int calculateFitness(int[] chromosome, int N) {
         int conflicts = 0;
         for (int i = 0; i < N; i++) {
             for (int j = i + 1; j < N; j++) {
@@ -38,65 +36,77 @@ public class GeneticAlgorithm {
     }
 
     // Selection: selects a subset of the population (parents) for the next generation using tournament selection
-    private static int[][] selection(int[][] population) {
-        int[][] parents = new int[POPULATION_SIZE / 2][N];
+    private static int[][] selection(int[][] population, int populationSize, int n, double selectionRate) {
+        int tournamentSize = (int) Math.round(populationSize * selectionRate);
+        int[][] parents = new int[populationSize / 2][n];
         Random random = new Random();
-        for (int i = 0; i < POPULATION_SIZE / 2; i++) {
-            int index1 = random.nextInt(POPULATION_SIZE);
-            int index2 = random.nextInt(POPULATION_SIZE);
-            if (calculateFitness(population[index1]) < calculateFitness(population[index2])) {
-                parents[i] = population[index1];
-            } else {
-                parents[i] = population[index2];
+        for (int i = 0; i < populationSize / 2; i++) {
+            // Select individuals for tournament
+            int[] tournament = new int[tournamentSize];
+            for (int j = 0; j < tournamentSize; j++) {
+                int index = random.nextInt(populationSize);
+                tournament[j] = index;
             }
+            // Determine the best individual from the tournament
+            int minFitness = Integer.MAX_VALUE;
+            int[] bestIndividual = new int[n];
+            for (int j = 0; j < tournamentSize; j++) {
+                int fitness = calculateFitness(population[tournament[j]], n);
+                if (fitness < minFitness) {
+                    minFitness = fitness;
+                    bestIndividual = population[tournament[j]];
+                }
+            }
+            parents[i] = bestIndividual;
         }
         return parents;
     }
 
-    // Crossover: performs one-point crossover on the selected parents to create new offspring chromosomes
-    private static int[][] crossover(int[][] parents) {
-        int[][] offspring = new int[POPULATION_SIZE / 2][N];
+
+    // Crossover: performs one-point crossover on the selected parents to create new children chromosomes
+    private static int[][] crossover(int[][] parents, int populationSize, int n) {
+        int[][] children = new int[populationSize / 2][n];
         Random random = new Random();
-        for (int i = 0; i < POPULATION_SIZE / 2; i += 2) {
-            int crossoverPoint = random.nextInt(N);
+        for (int i = 0; i < populationSize / 2; i += 2) {
+            int crossoverPoint = random.nextInt(n);
             for (int j = 0; j < crossoverPoint; j++) {
-                offspring[i][j] = parents[i][j];
-                offspring[i + 1][j] = parents[i + 1][j];
+                children[i][j] = parents[i][j];
+                children[i + 1][j] = parents[i + 1][j];
             }
-            for (int j = crossoverPoint; j < N; j++) {
-                offspring[i][j] = parents[i + 1][j];
-                offspring[i + 1][j] = parents[i][j];
+            for (int j = crossoverPoint; j < n; j++) {
+                children[i][j] = parents[i + 1][j];
+                children[i + 1][j] = parents[i][j];
             }
         }
-        return offspring;
+        return children;
     }
 
-    // Mutation: mutates some of the offspring chromosomes by randomly changing a gene (queen position) in the chromosome
-    private static int[][] mutation(int[][] offspring) {
+    // Mutation: mutates some of the children chromosomes by randomly changing a gene (queen position) in the chromosome
+    private static int[][] mutation(int[][] children, double mutationRate, int populationSize, int n) {
         Random random = new Random();
-        for (int i = 0; i < POPULATION_SIZE / 2; i++) {
-            if (random.nextDouble() < MUTATION_RATE) {
-                int mutationPoint = random.nextInt(N);
-                offspring[i][mutationPoint] = random.nextInt(N);
+        for (int i = 0; i < populationSize / 2; i++) {
+            if (random.nextDouble() < mutationRate) {
+                int mutationPoint = random.nextInt(n);
+                children[i][mutationPoint] = random.nextInt(n);
             }
         }
-        return offspring;
+        return children;
     }
 
-    public static void main(String[] args) {
-        int[][] population = initializePopulation(POPULATION_SIZE, N);
+    public static int[] geneticAlgorithm(int n, int populationSize, int maxGenerations, double mutationRate, double selectionRate) {
+        int[][] population = initializePopulation(populationSize, n);
 
-        for (int generation = 1; generation <= MAX_GENERATIONS; generation++) {
+        for (int generation = 1; generation <= maxGenerations; generation++) {
             // Evaluate fitness of the population
-            int[] fitness = new int[POPULATION_SIZE];
-            for (int i = 0; i < POPULATION_SIZE; i++) {
-                fitness[i] = calculateFitness(population[i]);
+            int[] fitness = new int[populationSize];
+            for (int i = 0; i < populationSize; i++) {
+                fitness[i] = calculateFitness(population[i], n);
             }
 
             // Check if solution has been found
             int minFitness = Integer.MAX_VALUE;
-            int[] bestIndividual = null;
-            for (int i = 0; i < POPULATION_SIZE; i++) {
+            int[] bestIndividual = new int[n];
+            for (int i = 0; i < populationSize; i++) {
                 if (fitness[i] < minFitness) {
                     minFitness = fitness[i];
                     bestIndividual = population[i];
@@ -104,43 +114,69 @@ public class GeneticAlgorithm {
             }
             if (minFitness == 0) {
                 System.out.println("Solution found after " + generation + " generations.");
-                printBoard(bestIndividual);
-                break;
+                return bestIndividual;
             }
 
             // Select parents for the next generation
-            int[][] parents = selection(population);
+            int[][] parents = selection(population, populationSize, n, selectionRate);
 
-            // Create offspring through crossover
-            int[][] offspring = crossover(parents);
+            // Create children through crossover
+            int[][] children = crossover(parents, populationSize, n);
 
-            // Mutate some of the offspring chromosomes
-            offspring = mutation(offspring);
+            // Mutate some of the children chromosomes
+            children = mutation(children, mutationRate, populationSize, n);
 
-            // Combine parents and offspring to form new population
-            int[][] newPopulation = new int[POPULATION_SIZE][N];
-            for (int i = 0; i < POPULATION_SIZE / 2; i++) {
+            // Combine parents and children to form new population
+            int[][] newPopulation = new int[populationSize][n];
+            for (int i = 0; i < populationSize / 2; i++) {
                 newPopulation[i] = parents[i];
-                newPopulation[i + POPULATION_SIZE / 2] = offspring[i];
+                newPopulation[i + populationSize / 2] = children[i];
             }
             population = newPopulation;
         }
-
+        return null;
     }
 
-    // Print the chess board with the positions of the queens
-    private static void printBoard(int[] queens) {
-        int n = queens.length;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                if (queens[i] == j) {
-                    System.out.print("Q ");
-                } else {
-                    System.out.print("- ");
+    public static Map<String, Integer> tuneGeneticAlgorithm(int n) {
+        int[] mutationRates = {1, 5, 10, 20, 50}; // mutation rates to try
+        int[] maxGenerations = {500, 1000, 5000, 10000}; // max generations to try
+        int[] populationSizes = {500, 1000, 5000, 10000}; // population sizes to try
+        double[] selectionRates = {0.2, 0.4, 0.6, 0.8, 1.0}; // selection rates to try
+
+        int bestFitness = Integer.MAX_VALUE;
+        Map<String, Integer> bestParams = new HashMap<>();
+
+        for (int mutationRate : mutationRates) {
+            for (int maxGeneration : maxGenerations) {
+                for (int populationSize : populationSizes) {
+                    for (double selectionRate : selectionRates) {
+                        if (populationSize < n) {
+                            continue;
+                        }
+
+                        // check if mutation rate is too high
+                        if (mutationRate >= 50 && populationSize < 500) {
+                            continue;
+                        }
+                        // run GA with current parameters
+                        int[] solution = geneticAlgorithm(n, populationSize, maxGeneration, mutationRate, selectionRate);
+
+                        // check fitness of solution
+                        int fitness = calculateFitness(solution, n);
+
+                        // update best parameters if a better solution is found
+                        if (fitness < bestFitness) {
+                            bestFitness = fitness;
+                            bestParams.put("mutationRate", mutationRate);
+                            bestParams.put("maxGenerations", maxGeneration);
+                            bestParams.put("populationSize", populationSize);
+                            bestParams.put("selectionRate", (int) (selectionRate * 100));
+                        }
+                    }
                 }
             }
-            System.out.println();
         }
+        return bestParams;
     }
 
 }
@@ -160,17 +196,17 @@ Select parents for the next generation: The algorithm selects pairs of parent so
 In tournament selection, a subset of the population is randomly selected, and the solution with the lowest fitness
 (i.e., the one with the fewest conflicts) is chosen as a parent.
 
-Create offspring through crossover: The algorithm creates offspring by performing crossover between pairs of parent solutions.
+Create children through crossover: The algorithm creates children by performing crossover between pairs of parent solutions.
 In crossover, the genetic material from two parent solutions is combined to form a new solution.
 The algorithm uses the one-point crossover method, where a random point along the length of the chromosome is selected, and the genetic material from each parent is swapped at that point.
 
-Mutate some of the offspring chromosomes: The algorithm introduces new genetic material into the population by randomly changing the position
-of a queen in some of the offspring chromosomes. This is done by selecting a random chromosome and randomly changing the position of one
+Mutate some of the children chromosomes: The algorithm introduces new genetic material into the population by randomly changing the position
+of a queen in some of the children chromosomes. This is done by selecting a random chromosome and randomly changing the position of one
 of the queens in the chromosome.
 
-Combine parents and offspring to form new population: The algorithm combines the parent solutions and offspring solutions to form a new population
+Combine parents and children to form new population: The algorithm combines the parent solutions and children solutions to form a new population
 of solutions for the next generation. The population size remains constant, and the new population is formed by replacing the least fit solutions
-from the current population with the offspring solutions.
+from the current population with the children solutions.
 
 Repeat steps 2-6 until a solution is found: The algorithm repeats steps 2-6 for a specified number of generations or
 until a solution with zero conflicts (i.e., a valid solution to the N-Queens problem) is found. If a solution is found,
