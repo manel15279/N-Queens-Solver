@@ -1,4 +1,5 @@
 package com.example.nqueens;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -93,8 +94,10 @@ public class GeneticAlgorithm {
         return children;
     }
 
-    public static int[] geneticAlgorithm(int n, int populationSize, int maxGenerations, double mutationRate, double selectionRate) {
+    public static Result2 geneticAlgorithm(int n, int populationSize, int maxGenerations, double mutationRate, double selectionRate) {
         int[][] population = initializePopulation(populationSize, n);
+        double[] successRate = new double[maxGenerations];
+        double totalSuccessRate = 0.0;
 
         for (int generation = 1; generation <= maxGenerations; generation++) {
             // Evaluate fitness of the population
@@ -113,8 +116,9 @@ public class GeneticAlgorithm {
                 }
             }
             if (minFitness == 0) {
-                System.out.println("Solution found after " + generation + " generations.");
-                return bestIndividual;
+                successRate[generation-1] = 1.0;
+                totalSuccessRate += 1.0;
+                return new Result2(totalSuccessRate/generation, bestIndividual, generation);
             }
 
             // Select parents for the next generation
@@ -133,11 +137,17 @@ public class GeneticAlgorithm {
                 newPopulation[i + populationSize / 2] = children[i];
             }
             population = newPopulation;
+
+            // Calculate success rate for this generation
+            int numSuccesses = populationSize - Arrays.stream(fitness).filter(f -> f > 0).toArray().length;
+            double successRateForGen = (double) numSuccesses / populationSize;
+            successRate[generation-1] = successRateForGen;
+            totalSuccessRate += successRateForGen;
         }
         return null;
     }
 
-    public static Map<String, Integer> tuneGeneticAlgorithm(int n) {
+    /*public static Map<String, Integer> tuneGeneticAlgorithm(int n) {
         int[] mutationRates = {1, 5, 10, 20, 50}; // mutation rates to try
         int[] maxGenerations = {500, 1000, 5000, 10000}; // max generations to try
         int[] populationSizes = {500, 1000, 5000, 10000}; // population sizes to try
@@ -177,7 +187,7 @@ public class GeneticAlgorithm {
             }
         }
         return bestParams;
-    }
+    }*/
 
 }
 

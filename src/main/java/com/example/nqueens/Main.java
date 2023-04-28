@@ -27,6 +27,7 @@ public class Main{
         Result resultBFS = null;
         Result1 resultAstar1 = null;
         Result1 resultAstar2 = null;
+        Result2 resultGA = null;
 
         float tempsExe;
         float tempsExe1;
@@ -36,17 +37,16 @@ public class Main{
 
         int populationSize = 8000; // size of the population
         int maxGenerations = 1000; // maximum number of generations
-        double mutationRate = 0.02; // probability of mutation
-        double selectionRate = 0.3; // probability of selection
+        double mutationRate = 0.01; // probability of mutation
+        double selectionRate = 0.1; // probability of selection
 
         // n est le nombre de rienes a déposer dans le n*n échiquier
-        for(int n = 8; n < 9; n++) {
+        for(int n = 6; n < 7; n++) {
             float moyDFS = 0;
             float moyBFS = 0;
             float moyAstar1 = 0;
             float moyAstar2 = 0;
             float moyGA = 0;
-            int[] resultGA = new int[n];
             //Affichage
             /*//DFS
             for(int i = 0; i < 20; i++) {
@@ -119,8 +119,8 @@ public class Main{
             System.out.println("Temps d'exécution : " + moyGA / 1 + " s");
             //System.out.println("Le nbr de nodes générés avant la premiere solution avec DFS: " + resultDFS.nbrNodeGenAvPremSol);
             //System.out.println("Le nombre de noeuds developpés : " + resultDFS.nbrNodeDev);
-            System.out.println("La liste des solutions : " + resultGA.toString());
-            Util.printBoard(resultGA);
+            System.out.println(resultGA.toString());
+            Util.printBoard(resultGA.solution);
             //bufferDFS.write(+n+ "&" + moyDFS / 20 + "&" + resultDFS.nbrNodeGenAvPremSol + "&" + resultDFS.nbrNodeDev + "&" + resultDFS.listeSol + "\n");
 
         }
