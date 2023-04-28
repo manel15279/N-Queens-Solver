@@ -17,6 +17,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 public class NQueensController {
 
@@ -25,19 +26,26 @@ public class NQueensController {
     @FXML
     public Label time;
     @FXML
-    private Label nodesGen;
+    private Label label1;
     @FXML
-    private Label nodesDev;
+    private Label label2;
+    @FXML
+    private Label label3;
     @FXML
     private Label solution;
 
     public int size;
     public String method;
-
     public float tempsExe;
     public Result resultDFS, resultBFS;
     public Result1 resultAstar1;
     public Result1 resultAstar2;
+    public Result2  resultGA;
+
+    int populationSize = 100; // size of the population
+    int maxGenerations = 5000; // maximum number of generations
+    double mutationRate = 0.2; // probability of mutation
+    double selectionRate = 0.8; // probability of selection
 
     public void createBoard(ActionEvent event) throws IOException {
         // Get the selected size
@@ -89,6 +97,14 @@ public class NQueensController {
         long t8 = System.currentTimeMillis();
         tempsExe = (float) (t8 - t7) / 1000;
     }
+    public void searchGA(ActionEvent event){
+        MenuItem selectedMethod = (MenuItem) event.getSource();
+        method = (String)selectedMethod.getText();
+        long t9 = System.currentTimeMillis();
+        resultGA = GeneticAlgorithm.geneticAlgorithm(size, populationSize, maxGenerations, mutationRate, selectionRate);
+        long t10 = System.currentTimeMillis();
+        tempsExe = (float) (t10 - t9) / 1000;
+    }
     // Display queens
     public void placeQueens(ActionEvent event) {
         for (int i = 0; i < size; i++) {
@@ -105,28 +121,36 @@ public class NQueensController {
                 chessBoard.add(queenImageView, i, resultDFS.listeSol.echiq[i]);
             if("BFS".equals(method))
                 chessBoard.add(queenImageView, i, resultBFS.listeSol.echiq[i]);
+            if("GA".equals(method))
+                chessBoard.add(queenImageView, i, resultGA.solution[i]);
         }
         //display stats
         time.setText("Temps d'exécution : " + tempsExe + " s");
         if("A*1".equals(method)) {
-            nodesGen.setText("Nombre de noeuds générés : " + resultAstar1.nbrNodeGenAvPremSol);
-            nodesDev.setText("Nombre de noeuds développés : " + resultAstar1.nbrNodeDev);
+            label1.setText("Nombre de noeuds générés : " + resultAstar1.nbrNodeGenAvPremSol);
+            label2.setText("Nombre de noeuds développés : " + resultAstar1.nbrNodeDev);
             solution.setText("Solution : " + resultAstar1.listeSol);
         }
         if("A*2".equals(method)){
-            nodesGen.setText("Nombre de noeuds générés : " + resultAstar2.nbrNodeGenAvPremSol);
-            nodesDev.setText("Nombre de noeuds développés : " + resultAstar2.nbrNodeDev);
+            label1.setText("Nombre de noeuds générés : " + resultAstar2.nbrNodeGenAvPremSol);
+            label2.setText("Nombre de noeuds développés : " + resultAstar2.nbrNodeDev);
             solution.setText("Solution : " + resultAstar2.listeSol);
         }
         if("DFS".equals(method)){
-            nodesGen.setText("Nombre de noeuds générés : " + resultDFS.nbrNodeGenAvPremSol);
-            nodesDev.setText("Nombre de noeuds développés : " + resultDFS.nbrNodeDev);
+            label1.setText("Nombre de noeuds générés : " + resultDFS.nbrNodeGenAvPremSol);
+            label2.setText("Nombre de noeuds développés : " + resultDFS.nbrNodeDev);
             solution.setText("Solution : " + resultDFS.listeSol);
         }
         if("BFS".equals(method)){
-            nodesGen.setText("Nombre de noeuds générés : " + resultBFS.nbrNodeGenAvPremSol);
-            nodesDev.setText("Nombre de noeuds développés : " + resultBFS.nbrNodeDev);
+            label1.setText("Nombre de noeuds générés : " + resultBFS.nbrNodeGenAvPremSol);
+            label2.setText("Nombre de noeuds développés : " + resultBFS.nbrNodeDev);
             solution.setText("Solution : " + resultBFS.listeSol);
+        }
+        if("GA".equals(method)){
+            label1.setText("Taux de succès : " + (int)(resultGA.successRate) + "%");
+            label2.setText("taux de progression : " + (int)(resultGA.improvementRate) + "%");
+            label3.setText("Solution trouvée après : " + resultGA.nbrGenerations + " générations");
+            solution.setText("Solution : " + Arrays.toString(resultGA.solution));
         }
     }
 

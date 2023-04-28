@@ -98,6 +98,8 @@ public class GeneticAlgorithm {
         int[][] population = initializePopulation(populationSize, n);
         double[] successRate = new double[maxGenerations];
         double totalSuccessRate = 0.0;
+        double improvementRate = 0.0;
+        double prevSuccessRate = 0.0;
 
         for (int generation = 1; generation <= maxGenerations; generation++) {
             // Evaluate fitness of the population
@@ -118,7 +120,7 @@ public class GeneticAlgorithm {
             if (minFitness == 0) {
                 successRate[generation-1] = 1.0;
                 totalSuccessRate += 1.0;
-                return new Result2(totalSuccessRate/generation, bestIndividual, generation);
+                return new Result2((totalSuccessRate/generation)*100, bestIndividual, generation, improvementRate*100);
             }
 
             // Select parents for the next generation
@@ -143,9 +145,16 @@ public class GeneticAlgorithm {
             double successRateForGen = (double) numSuccesses / populationSize;
             successRate[generation-1] = successRateForGen;
             totalSuccessRate += successRateForGen;
+
+            // Calculate improvement rate
+            if (generation > 1) {
+                improvementRate = (totalSuccessRate - prevSuccessRate) / prevSuccessRate;
+            }
+            prevSuccessRate = totalSuccessRate;
         }
         return null;
     }
+
 
     /*public static Map<String, Integer> tuneGeneticAlgorithm(int n) {
         int[] mutationRates = {1, 5, 10, 20, 50}; // mutation rates to try

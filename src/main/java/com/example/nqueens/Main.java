@@ -35,13 +35,13 @@ public class Main{
         float tempsExe3;
         float tempsExe4;
 
-        int populationSize = 8000; // size of the population
-        int maxGenerations = 1000; // maximum number of generations
-        double mutationRate = 0.01; // probability of mutation
-        double selectionRate = 0.1; // probability of selection
+        int populationSize = 3000; // size of the population
+        int maxGenerations = 5000; // maximum number of generations
+        double mutationRate = 0.03; // probability of mutation
+        double selectionRate = 0.5; // probability of selection
 
         // n est le nombre de rienes a déposer dans le n*n échiquier
-        for(int n = 6; n < 7; n++) {
+        for(int n = 8; n < 9; n++) {
             float moyDFS = 0;
             float moyBFS = 0;
             float moyAstar1 = 0;

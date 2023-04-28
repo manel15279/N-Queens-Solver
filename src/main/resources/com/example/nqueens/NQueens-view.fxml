@@ -29,7 +29,6 @@
                      </font></Label>
                   <MenuButton id="menu-button" mnemonicParsing="false" prefHeight="33.0" prefWidth="182.0" styleClass="menu-button" text="Taille">
                      <items>
-                        <MenuItem onAction="#createBoard" text="4x4" />
                         <MenuItem onAction="#createBoard" text="6x6" />
                         <MenuItem onAction="#createBoard" text="8x8" />
                         <MenuItem onAction="#createBoard" text="10x10" />
@@ -63,6 +62,7 @@
                         <MenuItem onAction="#searchBFS" text="BFS" />
                         <MenuItem onAction="#searchAstar1" text="A*1" />
                         <MenuItem onAction="#searchAstar2" text="A*2" />
+                        <MenuItem onAction="#searchGA" text="GA" />
                      </items>
                      <font>
                         <Font name="Century Gothic" size="12.0" />
@@ -84,8 +84,9 @@
             <VBox prefHeight="139.0" prefWidth="261.0">
                <children>
                   <Label fx:id="time" prefHeight="120.0" prefWidth="261.0" styleClass="stats" stylesheets="@style.css" textFill="WHITE" wrapText="true" />
-                  <Label fx:id="nodesGen" prefHeight="120.0" prefWidth="261.0" styleClass="stats" stylesheets="@style.css" textFill="WHITE" wrapText="true" />
-                  <Label fx:id="nodesDev" prefHeight="120.0" prefWidth="261.0" styleClass="stats" stylesheets="@style.css" textFill="WHITE" wrapText="true" />
+                  <Label fx:id="label1" prefHeight="120.0" prefWidth="261.0" styleClass="stats" stylesheets="@style.css" textFill="WHITE" wrapText="true" />
+                  <Label fx:id="label2" prefHeight="120.0" prefWidth="261.0" styleClass="stats" stylesheets="@style.css" textFill="WHITE" wrapText="true" />
+                  <Label fx:id="label3" prefHeight="120.0" prefWidth="261.0" styleClass="stats" stylesheets="@style.css" textFill="WHITE" wrapText="true" />
                   <Label fx:id="solution" prefHeight="120.0" prefWidth="261.0" styleClass="stats" stylesheets="@style.css" textFill="WHITE" wrapText="true" />
                </children>
             </VBox>
