@@ -2,10 +2,6 @@ package com.example.nqueens;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
@@ -42,8 +38,8 @@ public class NQueensController {
     public Result1 resultAstar2;
     public Result2  resultGA;
 
-    int populationSize = 100; // size of the population
-    int maxGenerations = 5000; // maximum number of generations
+    int populationSize = 5; // size of the population
+    int maxGenerations = 20; // maximum number of generations
     double mutationRate = 0.2; // probability of mutation
     double selectionRate = 0.8; // probability of selection
 
@@ -148,7 +144,7 @@ public class NQueensController {
         }
         if("GA".equals(method)){
             label1.setText("Taux de succès : " + (int)(resultGA.successRate) + "%");
-            label2.setText("taux de progression : " + (int)(resultGA.improvementRate) + "%");
+            label2.setText("Fitness score : " + (resultGA.fitnessScore));
             label3.setText("Solution trouvée après : " + resultGA.nbrGenerations + " générations");
             solution.setText("Solution : " + Arrays.toString(resultGA.solution));
         }

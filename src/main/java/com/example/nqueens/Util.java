@@ -50,6 +50,24 @@ public class Util {
         return true;
     }
 
+    //computes the fitness of an individual/particle
+    static int calculateFitness(int[] chromosome, int N) {
+        int conflicts = 0;
+        for (int i = 0; i < N; i++) {
+            for (int j = i + 1; j < N; j++) {
+                // check horizontal conflict
+                if (chromosome[i] == chromosome[j]) {
+                    conflicts++;
+                }
+                // check diagonal conflict
+                if (Math.abs(i - j) == Math.abs(chromosome[i] - chromosome[j])) {
+                    conflicts++;
+                }
+            }
+        }
+        return conflicts;
+    }
+
     public static void printEchiq(Result result, int n){
         //remplissage échiquier selon les solutions trouvées
         //intialisation échiquier

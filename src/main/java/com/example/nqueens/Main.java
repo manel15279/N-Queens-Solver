@@ -28,17 +28,26 @@ public class Main{
         Result1 resultAstar1 = null;
         Result1 resultAstar2 = null;
         Result2 resultGA = null;
+        Result2 resultPSO = null;
 
         float tempsExe;
         float tempsExe1;
         float tempsExe2;
         float tempsExe3;
         float tempsExe4;
+        float tempsExe5;
 
-        int populationSize = 3000; // size of the population
+        int populationSize = 500; // size of the population
         int maxGenerations = 5000; // maximum number of generations
-        double mutationRate = 0.03; // probability of mutation
+        double mutationRate = 0.05; // probability of mutation
         double selectionRate = 0.5; // probability of selection
+
+
+        int maxIterations = 1000; // maximum number of iterations prev 230
+        int swarmSize = 125; // number of particles in the swarm prev 20
+        double c1 = 2.0; // cognitive parameter
+        double c2 = 3.0; // social parameter prev 2.0
+        double w = 1.7; // inertia weight prev 0.7
 
         // n est le nombre de rienes a déposer dans le n*n échiquier
         for(int n = 8; n < 9; n++) {
@@ -47,6 +56,7 @@ public class Main{
             float moyAstar1 = 0;
             float moyAstar2 = 0;
             float moyGA = 0;
+            float moyPSO = 0;
             //Affichage
             /*//DFS
             for(int i = 0; i < 20; i++) {
@@ -107,7 +117,8 @@ public class Main{
             System.out.println("La liste des solutions : " + resultAstar2.listeSol);
             //Util.printEchiq1(resultAstar2, n);
             bufferAstar2.write(+n+ "&" + moyAstar2 / 20 + "&" + resultAstar2.nbrNodeGenAvPremSol + "&" + resultAstar2.nbrNodeDev + "&" + resultAstar2.listeSol + "\n");
-*/
+            */
+
             //GA
             for(int i = 0; i < 1; i++) {
                 long t9 = System.currentTimeMillis();
@@ -122,6 +133,24 @@ public class Main{
             System.out.println(resultGA.toString());
             Util.printBoard(resultGA.solution);
             //bufferDFS.write(+n+ "&" + moyDFS / 20 + "&" + resultDFS.nbrNodeGenAvPremSol + "&" + resultDFS.nbrNodeDev + "&" + resultDFS.listeSol + "\n");
+
+/*
+
+            //PSO
+            for(int i = 0; i < 1; i++) {
+                long t11 = System.currentTimeMillis();
+                resultPSO = ParticleSwarmOptimization.PSO(n, maxIterations, swarmSize, c1, c2, w);
+                long t12 = System.currentTimeMillis();
+                tempsExe5 = (float) (t12 - t11) / 1000;
+                moyPSO += tempsExe5;
+            }
+            System.out.println("Temps d'exécution : " + moyPSO / 1 + " s");
+            //System.out.println("Le nbr de nodes générés avant la premiere solution avec DFS: " + resultDFS.nbrNodeGenAvPremSol);
+            //System.out.println("Le nombre de noeuds developpés : " + resultDFS.nbrNodeDev);
+            System.out.println(resultPSO.toString());
+            Util.printBoard(resultPSO.solution);
+            //bufferDFS.write(+n+ "&" + moyDFS / 20 + "&" + resultDFS.nbrNodeGenAvPremSol + "&" + resultDFS.nbrNodeDev + "&" + resultDFS.listeSol + "\n");
+*/
 
         }
 /*

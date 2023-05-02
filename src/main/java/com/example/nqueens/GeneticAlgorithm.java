@@ -6,24 +6,6 @@ import java.util.Random;
 
 public class GeneticAlgorithm {
 
-    // Fitness function: calculates the number of conflicts in the placement of the queens
-    private static int calculateFitness(int[] chromosome, int N) {
-        int conflicts = 0;
-        for (int i = 0; i < N; i++) {
-            for (int j = i + 1; j < N; j++) {
-                // check horizontal conflict
-                if (chromosome[i] == chromosome[j]) {
-                    conflicts++;
-                }
-                // check diagonal conflict
-                if (Math.abs(i - j) == Math.abs(chromosome[i] - chromosome[j])) {
-                    conflicts++;
-                }
-            }
-        }
-        return conflicts;
-    }
-
     // Initialization: generates an initial population of random solutions
     private static int[][] initializePopulation(int populationSize, int n) {
         int[][] population = new int[populationSize][n];
@@ -52,7 +34,7 @@ public class GeneticAlgorithm {
             int minFitness = Integer.MAX_VALUE;
             int[] bestIndividual = new int[n];
             for (int j = 0; j < tournamentSize; j++) {
-                int fitness = calculateFitness(population[tournament[j]], n);
+                int fitness = Util.calculateFitness(population[tournament[j]], n);
                 if (fitness < minFitness) {
                     minFitness = fitness;
                     bestIndividual = population[tournament[j]];
@@ -98,19 +80,20 @@ public class GeneticAlgorithm {
         int[][] population = initializePopulation(populationSize, n);
         double[] successRate = new double[maxGenerations];
         double totalSuccessRate = 0.0;
-        double improvementRate = 0.0;
         double prevSuccessRate = 0.0;
 
-        for (int generation = 1; generation <= maxGenerations; generation++) {
+        int generation;
+        int[] bestIndividual = new int[0];
+        for (generation = 1; generation <= maxGenerations; generation++) {
             // Evaluate fitness of the population
             int[] fitness = new int[populationSize];
             for (int i = 0; i < populationSize; i++) {
-                fitness[i] = calculateFitness(population[i], n);
+                fitness[i] = Util.calculateFitness(population[i], n);
             }
 
             // Check if solution has been found
             int minFitness = Integer.MAX_VALUE;
-            int[] bestIndividual = new int[n];
+            bestIndividual = new int[n];
             for (int i = 0; i < populationSize; i++) {
                 if (fitness[i] < minFitness) {
                     minFitness = fitness[i];
@@ -118,9 +101,9 @@ public class GeneticAlgorithm {
                 }
             }
             if (minFitness == 0) {
-                successRate[generation-1] = 1.0;
+                successRate[generation - 1] = 1.0;
                 totalSuccessRate += 1.0;
-                return new Result2((totalSuccessRate/generation)*100, bestIndividual, generation, improvementRate*100);
+                return new Result2((totalSuccessRate / generation) * 100, bestIndividual, generation, Util.calculateFitness(bestIndividual, n));
             }
 
             // Select parents for the next generation
@@ -143,16 +126,11 @@ public class GeneticAlgorithm {
             // Calculate success rate for this generation
             int numSuccesses = populationSize - Arrays.stream(fitness).filter(f -> f > 0).toArray().length;
             double successRateForGen = (double) numSuccesses / populationSize;
-            successRate[generation-1] = successRateForGen;
+            successRate[generation - 1] = successRateForGen;
             totalSuccessRate += successRateForGen;
 
-            // Calculate improvement rate
-            if (generation > 1) {
-                improvementRate = (totalSuccessRate - prevSuccessRate) / prevSuccessRate;
-            }
-            prevSuccessRate = totalSuccessRate;
         }
-        return null;
+        return new Result2((totalSuccessRate / generation) * 100, bestIndividual, generation, Util.calculateFitness(bestIndividual, n));
     }
 
 
