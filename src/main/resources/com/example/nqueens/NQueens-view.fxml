@@ -63,6 +63,7 @@
                         <MenuItem onAction="#searchAstar1" text="A*1" />
                         <MenuItem onAction="#searchAstar2" text="A*2" />
                         <MenuItem onAction="#searchGA" text="GA" />
+                        <MenuItem onAction="#searchPSO" text="PSO" />
                      </items>
                      <font>
                         <Font name="Century Gothic" size="12.0" />

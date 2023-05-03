@@ -84,6 +84,7 @@ public class GeneticAlgorithm {
 
         int generation;
         int[] bestIndividual = new int[0];
+        int minFitness = 0;
         for (generation = 1; generation <= maxGenerations; generation++) {
             // Evaluate fitness of the population
             int[] fitness = new int[populationSize];
@@ -92,7 +93,7 @@ public class GeneticAlgorithm {
             }
 
             // Check if solution has been found
-            int minFitness = Integer.MAX_VALUE;
+            minFitness = Integer.MAX_VALUE;
             bestIndividual = new int[n];
             for (int i = 0; i < populationSize; i++) {
                 if (fitness[i] < minFitness) {
@@ -103,7 +104,7 @@ public class GeneticAlgorithm {
             if (minFitness == 0) {
                 successRate[generation - 1] = 1.0;
                 totalSuccessRate += 1.0;
-                return new Result2((totalSuccessRate / generation) * 100, bestIndividual, generation, Util.calculateFitness(bestIndividual, n));
+                return new Result2((totalSuccessRate / generation) * 100, bestIndividual, generation, minFitness);
             }
 
             // Select parents for the next generation
@@ -130,7 +131,7 @@ public class GeneticAlgorithm {
             totalSuccessRate += successRateForGen;
 
         }
-        return new Result2((totalSuccessRate / generation) * 100, bestIndividual, generation, Util.calculateFitness(bestIndividual, n));
+        return new Result2((totalSuccessRate / generation) * 100, bestIndividual, generation, minFitness);
     }
 
 

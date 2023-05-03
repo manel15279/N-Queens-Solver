@@ -37,11 +37,16 @@ public class NQueensController {
     public Result1 resultAstar1;
     public Result1 resultAstar2;
     public Result2  resultGA;
+    public Result2  resultPSO;
 
     int populationSize = 5; // size of the population
     int maxGenerations = 20; // maximum number of generations
     double mutationRate = 0.2; // probability of mutation
     double selectionRate = 0.8; // probability of selection
+
+
+    int maxIterations = 1000; // maximum number of iterations prev 230
+    int swarmSize = 125; // number of particles in the swarm prev 20
 
     public void createBoard(ActionEvent event) throws IOException {
         // Get the selected size
@@ -101,6 +106,14 @@ public class NQueensController {
         long t10 = System.currentTimeMillis();
         tempsExe = (float) (t10 - t9) / 1000;
     }
+    public void searchPSO(ActionEvent event){
+        MenuItem selectedMethod = (MenuItem) event.getSource();
+        method = (String)selectedMethod.getText();
+        long t11 = System.currentTimeMillis();
+        resultPSO = ParticleSwarmOptimization.PSO(size, maxIterations, swarmSize);
+        long t12 = System.currentTimeMillis();
+        tempsExe = (float) (t12 - t11) / 1000;
+    }
     // Display queens
     public void placeQueens(ActionEvent event) {
         for (int i = 0; i < size; i++) {
@@ -119,6 +132,8 @@ public class NQueensController {
                 chessBoard.add(queenImageView, i, resultBFS.listeSol.echiq[i]);
             if("GA".equals(method))
                 chessBoard.add(queenImageView, i, resultGA.solution[i]);
+            if("PSO".equals(method))
+                chessBoard.add(queenImageView, i, resultPSO.solution[i]);
         }
         //display stats
         time.setText("Temps d'exécution : " + tempsExe + " s");
@@ -147,6 +162,12 @@ public class NQueensController {
             label2.setText("Fitness score : " + (resultGA.fitnessScore));
             label3.setText("Solution trouvée après : " + resultGA.nbrGenerations + " générations");
             solution.setText("Solution : " + Arrays.toString(resultGA.solution));
+        }
+        if("PSO".equals(method)){
+            label1.setText("Taux de succès : " + (int)(resultPSO.successRate) + "%");
+            label2.setText("Fitness score : " + (resultPSO.fitnessScore));
+            label3.setText("Solution trouvée après : " + resultPSO.nbrGenerations + " générations");
+            solution.setText("Solution : " + Arrays.toString(resultPSO.solution));
         }
     }
 

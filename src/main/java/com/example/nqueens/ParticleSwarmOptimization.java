@@ -1,7 +1,7 @@
 package com.example.nqueens;
 
 public class ParticleSwarmOptimization {
-    public static Result2 PSO(int n, int maxIterations, int swarmSize, double c1, double c2, double w) {
+    public static Result2 PSO(int n, int maxIterations, int swarmSize) {
 
         // create swarm
         Particle[] swarm = new Particle[swarmSize];
@@ -12,50 +12,31 @@ public class ParticleSwarmOptimization {
         // start PSO
         int iteration = 0;
         Particle bestParticle = null;
+        int minFitness = 0;
         while (iteration < maxIterations) {
+
+            // Check if solution has been found
+            minFitness = Integer.MAX_VALUE;
+            bestParticle = new Particle(n);
+            for (int i = 0; i < swarmSize; i++) {
+                if (swarm[i].fitness < minFitness) {
+                    minFitness = swarm[i].fitness;
+                    bestParticle = swarm[i];
+                }
+            }
+            // check for solution
+            if (minFitness == 0) {
+                return new Result2(bestParticle.position, iteration, minFitness);
+            }
 
             // update particle positions and velocities and fitnesses
             for (int i = 0; i < swarmSize; i++) {
-                swarm[i].update(c1, c2, w);
-            }
-
-            // check for solution
-            for (int i = 0; i < swarmSize; i++) {
-                if (swarm[i].fitness == 0) {
-                    return new Result2(swarm[i].position, iteration);
-                }
-            }
-
-            // check for best particle
-            if (bestParticle == null || bestParticle.fitness > getBestFitness(swarm)) {
-                bestParticle = new Particle(n);
-                bestParticle = swarm[getBestParticleIndex(swarm)];
+                swarm[i].update();
             }
 
             iteration++;
         }
-        return new Result2(bestParticle.position, iteration);
+        return new Result2(bestParticle.position, iteration, minFitness);
     }
 
-    private static int getBestFitness(Particle[] swarm) {
-        int bestFitness = Integer.MAX_VALUE;
-        for (Particle particle : swarm) {
-            if (particle.fitness < bestFitness) {
-                bestFitness = particle.fitness;
-            }
-        }
-        return bestFitness;
-    }
-
-    private static int getBestParticleIndex(Particle[] swarm) {
-        int bestParticleIndex = 0;
-        int bestFitness = Integer.MAX_VALUE;
-        for (int i = 0; i < swarm.length; i++) {
-            if (swarm[i].fitness < bestFitness) {
-                bestFitness = swarm[i].fitness;
-                bestParticleIndex = i;
-            }
-        }
-        return bestParticleIndex;
-    }
 }

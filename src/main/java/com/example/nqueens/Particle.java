@@ -27,14 +27,35 @@ class Particle {
         fitness = Util.calculateFitness(position, position.length);
     }
 
-    public void update(double c1, double c2, double w) {
+    public void update() {
+        int[] newPosition = new int[position.length];
+
+        // Perform crossover between current position and personal best
         for (int i = 0; i < position.length; i++) {
-            velocity[i] = (int)(w*velocity[i] + c1*rand.nextDouble()*(personalBest[i]-position[i]) + c2*rand.nextDouble()*(globalBest[i]-position[i]));
-            position[i] += velocity[i];
-            while (position[i] < 0) position[i] += position.length;
-            while (position[i] >= position.length) position[i] -= position.length;
+            if (rand.nextDouble() < 0.5) {
+                if(rand.nextDouble() < 0.3){
+                    newPosition[i] = globalBest[i];
+                }
+                else {
+                    newPosition[i] = position[i];
+                }
+            } else {
+                newPosition[i] = personalBest[i];
+            }
         }
+
+        // swap
+        int mutationPoint1 = rand.nextInt(position.length);
+        int mutationPoint2 = rand.nextInt(position.length);
+        int temp = newPosition[mutationPoint1];
+        newPosition[mutationPoint1] = newPosition[mutationPoint2];
+        newPosition[mutationPoint2] = temp;
+
+        // Update position with crossover result
+        position = newPosition;
         fitness = Util.calculateFitness(position, position.length);
+
+        // Update personal and global best positions
         updatePersonalBest();
         updateGlobalBest();
     }

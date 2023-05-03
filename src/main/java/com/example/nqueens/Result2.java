@@ -9,22 +9,23 @@ public class Result2 {
     int[] solution;
     int nbrGenerations;
 
-    public Result2(double successRate, int[] solution, int nbrGenerations, double improvementRate) {
+    public Result2(double successRate, int[] solution, int nbrGenerations, int fitnessScore) {
         this.successRate = successRate;
         this.solution = solution;
         this.nbrGenerations = nbrGenerations;
         this.fitnessScore = fitnessScore;
     }
 
-    public Result2(int[] solution, int nbrGenerations) {
+    public Result2(int[] solution, int nbrGenerations, int fitnessScore) {
         this.solution = solution;
         this.nbrGenerations = nbrGenerations;
+        this.fitnessScore = fitnessScore;
     }
 
     @Override
     public String toString() {
         return "Result{" +
-                "successRate=" + successRate + "%, fitnessScore=" + fitnessScore +"%, solution=" + Arrays.toString(solution) + ", nbrGenerations=" + nbrGenerations +
+                "successRate=" + successRate + "%, fitnessScore=" + fitnessScore +", solution=" + Arrays.toString(solution) + ", nbrGenerations=" + nbrGenerations +
                 '}';
     }
 }

@@ -45,12 +45,12 @@ public class Main{
 
         int maxIterations = 1000; // maximum number of iterations prev 230
         int swarmSize = 125; // number of particles in the swarm prev 20
-        double c1 = 2.0; // cognitive parameter
+        /*double c1 = 2.0; // cognitive parameter
         double c2 = 3.0; // social parameter prev 2.0
-        double w = 1.7; // inertia weight prev 0.7
+        double w = 1.7; // inertia weight prev 0.7*/
 
         // n est le nombre de rienes a déposer dans le n*n échiquier
-        for(int n = 8; n < 9; n++) {
+        for(int n = 100; n < 101; n++) {
             float moyDFS = 0;
             float moyBFS = 0;
             float moyAstar1 = 0;
@@ -117,7 +117,7 @@ public class Main{
             System.out.println("La liste des solutions : " + resultAstar2.listeSol);
             //Util.printEchiq1(resultAstar2, n);
             bufferAstar2.write(+n+ "&" + moyAstar2 / 20 + "&" + resultAstar2.nbrNodeGenAvPremSol + "&" + resultAstar2.nbrNodeDev + "&" + resultAstar2.listeSol + "\n");
-            */
+
 
             //GA
             for(int i = 0; i < 1; i++) {
@@ -133,13 +133,12 @@ public class Main{
             System.out.println(resultGA.toString());
             Util.printBoard(resultGA.solution);
             //bufferDFS.write(+n+ "&" + moyDFS / 20 + "&" + resultDFS.nbrNodeGenAvPremSol + "&" + resultDFS.nbrNodeDev + "&" + resultDFS.listeSol + "\n");
-
-/*
+            */
 
             //PSO
             for(int i = 0; i < 1; i++) {
                 long t11 = System.currentTimeMillis();
-                resultPSO = ParticleSwarmOptimization.PSO(n, maxIterations, swarmSize, c1, c2, w);
+                resultPSO = ParticleSwarmOptimization.PSO(n, maxIterations, swarmSize);
                 long t12 = System.currentTimeMillis();
                 tempsExe5 = (float) (t12 - t11) / 1000;
                 moyPSO += tempsExe5;
@@ -150,7 +149,7 @@ public class Main{
             System.out.println(resultPSO.toString());
             Util.printBoard(resultPSO.solution);
             //bufferDFS.write(+n+ "&" + moyDFS / 20 + "&" + resultDFS.nbrNodeGenAvPremSol + "&" + resultDFS.nbrNodeDev + "&" + resultDFS.listeSol + "\n");
-*/
+
 
         }
 /*
