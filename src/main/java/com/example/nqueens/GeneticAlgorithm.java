@@ -1,8 +1,5 @@
 package com.example.nqueens;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class GeneticAlgorithm {
 
@@ -45,6 +42,21 @@ public class GeneticAlgorithm {
         return parents;
     }
 
+    public static int[][] elitistSelection(int[][] population, int elitismCount, int n) {
+        // Sort the population by fitness in descending order
+        Arrays.sort(population, (o1, o2) -> {
+            int fitness1 = Util.calculateFitness(o1, n);
+            int fitness2 = Util.calculateFitness(o2, n);
+            return Integer.compare(fitness1, fitness2);
+        });
+
+        // Select the top elitismCount chromosomes
+        int[][] eliteChromosomes = Arrays.copyOfRange(population, 0, elitismCount);
+
+        // Return the elite chromosomes
+        return eliteChromosomes;
+    }
+
 
     // Crossover: performs one-point crossover on the selected parents to create new children chromosomes
     private static int[][] crossover(int[][] parents, int populationSize, int n) {
@@ -76,6 +88,57 @@ public class GeneticAlgorithm {
         return children;
     }
 
+    private static int[][] elitistReplacement(int[][] population, int[][] children, int populationSize, int n) {
+        int[][] combined = new int[populationSize + children.length][n];
+
+        // Combine the parent and child populations
+        System.arraycopy(population, 0, combined, 0, populationSize);
+        System.arraycopy(children, 0, combined, populationSize, children.length);
+
+        // Sort the combined population by fitness in ascending order
+        Arrays.sort(combined, Comparator.comparingInt(c -> Util.calculateFitness(c, n)));
+
+        // Copy the elite chromosomes into the new population
+        int[][] newPopulation = Arrays.copyOfRange(combined, 0, populationSize);
+
+        return newPopulation;
+    }
+
+    public static int[][] replacePopulation(int[][] population, int[][] children, int n) {
+        int populationSize = population.length;
+        int childrenSize = children.length;
+        int[][] newPopulation = new int[populationSize][];
+
+        // Sort the population by fitness in descending order
+        Arrays.sort(population, (o1, o2) -> {
+            int fitness1 = Util.calculateFitness(o1,n);
+            int fitness2 = Util.calculateFitness(o2,n);
+            return Integer.compare(fitness1, fitness2);
+        });
+
+        // Calculate the elite size as a fraction of the current population
+        int eliteSize = Math.max(1, populationSize / 10); // set as 10% of the population size
+
+        // Copy the elite individuals from the current population to the new population
+        for (int i = 0; i < eliteSize; i++) {
+            newPopulation[i] = population[i];
+        }
+
+        // Replace the worst individuals with the children
+        int childIndex = 0;
+        for (int i = eliteSize; i < populationSize; i++) {
+            if (childIndex < childrenSize && Util.calculateFitness(children[childIndex],n) < Util.calculateFitness(population[i], n)) {
+                // Replace the ith individual with the child
+                newPopulation[i] = children[childIndex++];
+            } else {
+                // Keep the ith individual from the original population
+                newPopulation[i] = population[i];
+            }
+        }
+
+        return newPopulation;
+    }
+
     public static Result2 geneticAlgorithm(int n, int populationSize, int maxGenerations, double mutationRate, double selectionRate) {
         int[][] population = initializePopulation(populationSize, n);
         double[] successRate = new double[maxGenerations];
@@ -104,11 +167,11 @@ public class GeneticAlgorithm {
             if (minFitness == 0) {
                 successRate[generation - 1] = 1.0;
                 totalSuccessRate += 1.0;
-                return new Result2((totalSuccessRate / generation) * 100, bestIndividual, generation, minFitness);
+                return new Result2((totalSuccessRate / generation) * 100, bestIndividual, generation, 0);
             }
 
             // Select parents for the next generation
-            int[][] parents = selection(population, populationSize, n, selectionRate);
+            int[][] parents = elitistSelection(population, (int) Math.round(populationSize * selectionRate), n);
 
             // Create children through crossover
             int[][] children = crossover(parents, populationSize, n);
@@ -116,13 +179,13 @@ public class GeneticAlgorithm {
             // Mutate some of the children chromosomes
             children = mutation(children, mutationRate, populationSize, n);
 
-            // Combine parents and children to form new population
+            /*// Combine parents and children to form new population
             int[][] newPopulation = new int[populationSize][n];
             for (int i = 0; i < populationSize / 2; i++) {
                 newPopulation[i] = parents[i];
                 newPopulation[i + populationSize / 2] = children[i];
-            }
-            population = newPopulation;
+            }*/
+            population = elitistReplacement(population, children, populationSize, n);
 
             // Calculate success rate for this generation
             int numSuccesses = populationSize - Arrays.stream(fitness).filter(f -> f > 0).toArray().length;
@@ -130,6 +193,17 @@ public class GeneticAlgorithm {
             successRate[generation - 1] = successRateForGen;
             totalSuccessRate += successRateForGen;
 
+        }
+        // Check if solution has been found
+        minFitness = Integer.MAX_VALUE;
+        bestIndividual = new int[n];
+        int fitness;
+        for (int i = 0; i < populationSize; i++) {
+            fitness = Util.calculateFitness(population[i], n);
+            if (fitness < minFitness) {
+                minFitness = fitness;
+                bestIndividual = population[i];
+            }
         }
         return new Result2((totalSuccessRate / generation) * 100, bestIndividual, generation, minFitness);
     }

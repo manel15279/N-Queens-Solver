@@ -65,7 +65,7 @@ public class Util {
                 }
             }
         }
-        return conflicts / 2;
+        return conflicts;
     }
 
     public static void printEchiq(Result result, int n){

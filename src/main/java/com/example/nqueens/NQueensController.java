@@ -39,14 +39,14 @@ public class NQueensController {
     public Result2  resultGA;
     public Result2  resultPSO;
 
-    int populationSize = 5; // size of the population
-    int maxGenerations = 20; // maximum number of generations
+    int populationSize = 100; // size of the population
+    int maxGenerations = 5000; // maximum number of generations
     double mutationRate = 0.2; // probability of mutation
-    double selectionRate = 0.8; // probability of selection
+    double selectionRate = 0.5; // probability of selection
 
 
     int maxIterations = 1000; // maximum number of iterations prev 230
-    int swarmSize = 125; // number of particles in the swarm prev 20
+    int swarmSize = 100; // number of particles in the swarm prev 20
 
     public void createBoard(ActionEvent event) throws IOException {
         // Get the selected size

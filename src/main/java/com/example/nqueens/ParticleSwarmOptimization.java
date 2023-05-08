@@ -26,7 +26,7 @@ public class ParticleSwarmOptimization {
             }
             // check for solution
             if (minFitness == 0) {
-                return new Result2(bestParticle.position, iteration, minFitness);
+                return new Result2(bestParticle.position, iteration, 0);
             }
 
             // update particle positions and velocities and fitnesses
@@ -35,6 +35,15 @@ public class ParticleSwarmOptimization {
             }
 
             iteration++;
+        }
+        // Check if solution has been found
+        minFitness = Integer.MAX_VALUE;
+        bestParticle = new Particle(n);
+        for (int i = 0; i < swarmSize; i++) {
+            if (swarm[i].fitness < minFitness) {
+                minFitness = swarm[i].fitness;
+                bestParticle = swarm[i];
+            }
         }
         return new Result2(bestParticle.position, iteration, minFitness);
     }
