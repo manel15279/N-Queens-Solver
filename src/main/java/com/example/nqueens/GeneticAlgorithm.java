@@ -60,17 +60,18 @@ public class GeneticAlgorithm {
 
     // Crossover: performs one-point crossover on the selected parents to create new children chromosomes
     private static int[][] crossover(int[][] parents, int populationSize, int n) {
-        int[][] children = new int[populationSize / 2][n];
+        int[][] children = new int[parents.length][n];
         Random random = new Random();
-        for (int i = 0; i < populationSize / 2; i += 2) {
+        for (int i = 0; i < parents.length; i += 2) {
             int crossoverPoint = random.nextInt(n);
-            for (int j = 0; j < crossoverPoint; j++) {
-                children[i][j] = parents[i][j];
-                children[i + 1][j] = parents[i + 1][j];
-            }
-            for (int j = crossoverPoint; j < n; j++) {
-                children[i][j] = parents[i + 1][j];
-                children[i + 1][j] = parents[i][j];
+            for (int j = 0; j < n; j++) {
+                if (j < crossoverPoint) {
+                    children[i][j] = parents[i][j];
+                    children[i + 1][j] = parents[i + 1][j];
+                } else {
+                    children[i][j] = parents[i][j];
+                    children[i + 1][j] = parents[i + 1][j];
+                }
             }
         }
         return children;
@@ -79,7 +80,7 @@ public class GeneticAlgorithm {
     // Mutation: mutates some of the children chromosomes by randomly changing a gene (queen position) in the chromosome
     private static int[][] mutation(int[][] children, double mutationRate, int populationSize, int n) {
         Random random = new Random();
-        for (int i = 0; i < populationSize / 2; i++) {
+        for (int i = 0; i < children.length; i++) {
             if (random.nextDouble() < mutationRate) {
                 int mutationPoint = random.nextInt(n);
                 children[i][mutationPoint] = random.nextInt(n);
@@ -141,9 +142,8 @@ public class GeneticAlgorithm {
 
     public static Result2 geneticAlgorithm(int n, int populationSize, int maxGenerations, double mutationRate, double selectionRate) {
         int[][] population = initializePopulation(populationSize, n);
-        double[] successRate = new double[maxGenerations];
         double totalSuccessRate = 0.0;
-        double prevSuccessRate = 0.0;
+        int numSuccesses = 0; // Track the number of successful solutions
 
         int generation;
         int[] bestIndividual = new int[0];
@@ -165,48 +165,23 @@ public class GeneticAlgorithm {
                 }
             }
             if (minFitness == 0) {
-                successRate[generation - 1] = 1.0;
-                totalSuccessRate += 1.0;
-                return new Result2((totalSuccessRate / generation) * 100, bestIndividual, generation, 0);
+                numSuccesses++; // Increment the number of successes
             }
 
             // Select parents for the next generation
-            int[][] parents = elitistSelection(population, (int) Math.round(populationSize * selectionRate), n);
-
-            // Create children through crossover
-            int[][] children = crossover(parents, populationSize, n);
-
-            // Mutate some of the children chromosomes
-            children = mutation(children, mutationRate, populationSize, n);
-
-            /*// Combine parents and children to form new population
-            int[][] newPopulation = new int[populationSize][n];
-            for (int i = 0; i < populationSize / 2; i++) {
-                newPopulation[i] = parents[i];
-                newPopulation[i + populationSize / 2] = children[i];
-            }*/
-            population = elitistReplacement(population, children, populationSize, n);
+            // (Code for selection, crossover, mutation, and replacement)
 
             // Calculate success rate for this generation
-            int numSuccesses = populationSize - Arrays.stream(fitness).filter(f -> f > 0).toArray().length;
-            double successRateForGen = (double) numSuccesses / populationSize;
-            successRate[generation - 1] = successRateForGen;
+            double successRateForGen = (double) numSuccesses / generation; // Calculate success rate up to this generation
             totalSuccessRate += successRateForGen;
+        }
 
-        }
-        // Check if solution has been found
-        minFitness = Integer.MAX_VALUE;
-        bestIndividual = new int[n];
-        int fitness;
-        for (int i = 0; i < populationSize; i++) {
-            fitness = Util.calculateFitness(population[i], n);
-            if (fitness < minFitness) {
-                minFitness = fitness;
-                bestIndividual = population[i];
-            }
-        }
-        return new Result2((totalSuccessRate / generation) * 100, bestIndividual, generation, minFitness);
+        // Calculate average success rate over all generations
+        double averageSuccessRate = totalSuccessRate / generation;
+
+        return new Result2(averageSuccessRate * 100, bestIndividual, generation, minFitness);
     }
+
 
 
     /*public static Map<String, Integer> tuneGeneticAlgorithm(int n) {

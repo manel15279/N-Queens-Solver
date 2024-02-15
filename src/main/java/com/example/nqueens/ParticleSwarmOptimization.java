@@ -1,7 +1,7 @@
 package com.example.nqueens;
 
 public class ParticleSwarmOptimization {
-    public static Result2 PSO(int n, int maxIterations, int swarmSize) {
+    public static Result2 PSO(int n, int maxIterations, int swarmSize, double c1, double c2) {
 
         // create swarm
         Particle[] swarm = new Particle[swarmSize];
@@ -31,7 +31,7 @@ public class ParticleSwarmOptimization {
 
             // update particle positions and velocities and fitnesses
             for (int i = 0; i < swarmSize; i++) {
-                swarm[i].update();
+                swarm[i].update(c1 , c2);
             }
 
             iteration++;

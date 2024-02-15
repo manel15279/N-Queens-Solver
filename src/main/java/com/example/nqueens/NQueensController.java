@@ -2,6 +2,8 @@ package com.example.nqueens;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
@@ -11,10 +13,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-
+import javafx.geometry.Pos;
 import java.io.IOException;
 import java.util.Arrays;
-
 public class NQueensController {
 
     @FXML
@@ -25,8 +26,6 @@ public class NQueensController {
     private Label label1;
     @FXML
     private Label label2;
-    @FXML
-    private Label label3;
     @FXML
     private Label solution;
 
@@ -47,6 +46,8 @@ public class NQueensController {
 
     int maxIterations = 1000; // maximum number of iterations prev 230
     int swarmSize = 100; // number of particles in the swarm prev 20
+    double c1 = 5.0; // cognitive parameter
+    double c2 = 3.0; // social parameter prev 2.0
 
     public void createBoard(ActionEvent event) throws IOException {
         // Get the selected size
@@ -57,7 +58,7 @@ public class NQueensController {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 Rectangle square = new Rectangle(50, 50);
-                square.setFill((i + j) % 2 == 0 ? Color.web("#F0F0F0") : Color.web("#000000"));
+                square.setFill((i + j) % 2 == 0 ? Color.web("#ffcc9c") : Color.web("#cf8948"));
                 chessBoard.add(square, j, i);
             }
         }
@@ -110,18 +111,19 @@ public class NQueensController {
         MenuItem selectedMethod = (MenuItem) event.getSource();
         method = (String)selectedMethod.getText();
         long t11 = System.currentTimeMillis();
-        resultPSO = ParticleSwarmOptimization.PSO(size, maxIterations, swarmSize);
+        resultPSO = ParticleSwarmOptimization.PSO(size, maxIterations, swarmSize, c1, c2);
         long t12 = System.currentTimeMillis();
         tempsExe = (float) (t12 - t11) / 1000;
     }
     // Display queens
     public void placeQueens(ActionEvent event) {
         for (int i = 0; i < size; i++) {
-            Image image = new Image(getClass().getResource("la-monarchie.png").toExternalForm());
+            Image image = new Image(getClass().getResource("queen-chess.png").toExternalForm());
             ImageView queenImageView = new ImageView(image);
-            queenImageView.setFitHeight(48);
-            queenImageView.setFitWidth(47);
-            queenImageView.setStyle("-fx-alignment: center;");
+            queenImageView.setFitHeight(38);
+            queenImageView.setFitWidth(42);
+            GridPane.setHalignment(queenImageView, HPos.CENTER);
+            GridPane.setValignment(queenImageView, VPos.CENTER);
             if("A*1".equals(method))
                 chessBoard.add(queenImageView, i, resultAstar1.listeSol.echiq[i]);
             if("A*2".equals(method))
@@ -136,37 +138,35 @@ public class NQueensController {
                 chessBoard.add(queenImageView, i, resultPSO.solution[i]);
         }
         //display stats
-        time.setText("Temps d'exécution : " + tempsExe + " s");
+        time.setText("Execution Time : " + tempsExe + " s");
         if("A*1".equals(method)) {
-            label1.setText("Nombre de noeuds générés : " + resultAstar1.nbrNodeGenAvPremSol);
-            label2.setText("Nombre de noeuds développés : " + resultAstar1.nbrNodeDev);
+            label1.setText("Generated Nodes : " + resultAstar1.nbrNodeGenAvPremSol);
+            label2.setText("Developed Nodes : " + resultAstar1.nbrNodeDev);
             solution.setText("Solution : " + resultAstar1.listeSol);
         }
         if("A*2".equals(method)){
-            label1.setText("Nombre de noeuds générés : " + resultAstar2.nbrNodeGenAvPremSol);
-            label2.setText("Nombre de noeuds développés : " + resultAstar2.nbrNodeDev);
+            label1.setText("Generated Nodes : " + resultAstar2.nbrNodeGenAvPremSol);
+            label2.setText("Developed Nodes : " + resultAstar2.nbrNodeDev);
             solution.setText("Solution : " + resultAstar2.listeSol);
         }
         if("DFS".equals(method)){
-            label1.setText("Nombre de noeuds générés : " + resultDFS.nbrNodeGenAvPremSol);
-            label2.setText("Nombre de noeuds développés : " + resultDFS.nbrNodeDev);
+            label1.setText("Generated Nodes : " + resultDFS.nbrNodeGenAvPremSol);
+            label2.setText("Developed Nodes : " + resultDFS.nbrNodeDev);
             solution.setText("Solution : " + resultDFS.listeSol);
         }
         if("BFS".equals(method)){
-            label1.setText("Nombre de noeuds générés : " + resultBFS.nbrNodeGenAvPremSol);
-            label2.setText("Nombre de noeuds développés : " + resultBFS.nbrNodeDev);
+            label1.setText("Generated Nodes : " + resultBFS.nbrNodeGenAvPremSol);
+            label2.setText("Developed Nodes : " + resultBFS.nbrNodeDev);
             solution.setText("Solution : " + resultBFS.listeSol);
         }
         if("GA".equals(method)){
-            label1.setText("Taux de succès : " + (int)(resultGA.successRate) + "%");
-            label2.setText("Fitness score : " + (resultGA.fitnessScore));
-            label3.setText("Solution trouvée après : " + resultGA.nbrGenerations + " générations");
+            label1.setText("Fitness Score : " + (resultGA.fitnessScore));
+            label2.setText("Generations before solution : " + resultGA.nbrGenerations + " generations");
             solution.setText("Solution : " + Arrays.toString(resultGA.solution));
         }
         if("PSO".equals(method)){
-            label1.setText("Taux de succès : " + (int)(resultPSO.successRate) + "%");
-            label2.setText("Fitness score : " + (resultPSO.fitnessScore));
-            label3.setText("Solution trouvée après : " + resultPSO.nbrGenerations + " générations");
+            label1.setText("Fitness Score : " + (resultPSO.fitnessScore));
+            label2.setText("Generations before solution  : " + resultPSO.nbrGenerations + " generations");
             solution.setText("Solution : " + Arrays.toString(resultPSO.solution));
         }
     }
