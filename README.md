@@ -20,5 +20,5 @@ The N-Queens Solver is a Java application that provides solutions to the N-Queen
 4. Visualize the progress and results on the chessboard displayed.
 
 ## Dependencies
-Java JDK 
-JavaFX 
+- Java JDK 
+- JavaFX 
