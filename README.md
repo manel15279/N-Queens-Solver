@@ -1,4 +1,4 @@
-# N-Queens Solver :chess_queen:
+# N-Queens Solver ♕
 
 ## Overview
 The N-Queens Solver is a Java application that provides solutions to the N-Queens problem using various search algorithms. The project utilizes Java and JavaFX for the user interface, allowing users to interactively visualize the solving process.
